@@ -545,7 +545,8 @@ function setViewport(mode) {
     document.querySelector('.switcher').style.display = 'none';
     var vt = document.querySelector('.viewport-toggle');
     if (vt) vt.style.display = 'none';
-    document.querySelector('.mock-container').style.paddingTop = '0';
+    var mc = document.querySelector('.mock-container');
+    if (mc) mc.style.paddingTop = '0';
   }
 })();
 </script>
