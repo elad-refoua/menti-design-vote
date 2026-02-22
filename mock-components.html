@@ -397,6 +397,13 @@ function toggleGrain() {
   grainOn = !grainOn;
   document.getElementById('grain-layer').style.opacity = grainOn ? 1 : 0;
 }
+// Embed mode: hide header for iframe embedding
+(function() {
+  if (new URLSearchParams(location.search).get('embed') === '1') {
+    document.querySelector('h1').style.display = 'none';
+    document.querySelector('.subtitle').style.display = 'none';
+  }
+})();
 </script>
 </body>
 </html>

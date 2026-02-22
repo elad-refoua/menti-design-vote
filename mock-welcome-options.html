@@ -536,6 +536,18 @@ function setViewport(mode) {
     frame.style.width = mode === 'mobile' ? '375px' : '420px';
   });
 }
+// URL param support for iframe embedding
+(function() {
+  const p = new URLSearchParams(location.search);
+  const opt = p.get('opt');
+  if (opt) showOption(opt);
+  if (p.get('embed') === '1') {
+    document.querySelector('.switcher').style.display = 'none';
+    var vt = document.querySelector('.viewport-toggle');
+    if (vt) vt.style.display = 'none';
+    document.querySelector('.mock-container').style.paddingTop = '0';
+  }
+})();
 </script>
 </body>
 </html>

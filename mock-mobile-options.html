@@ -713,6 +713,13 @@ function showScreen(id) {
   document.querySelectorAll('.screen-tabs button').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
 }
+// Embed mode: hide header for iframe embedding
+(function() {
+  if (new URLSearchParams(location.search).get('embed') === '1') {
+    document.querySelector('.page-header').style.display = 'none';
+    document.querySelector('.screen-tabs').style.display = 'none';
+  }
+})();
 </script>
 </body>
 </html>

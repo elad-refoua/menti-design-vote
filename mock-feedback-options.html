@@ -693,6 +693,18 @@ function setWidth(w) {
   document.querySelectorAll('.viewport-toggle button').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
 }
+// URL param support for iframe embedding
+(function() {
+  const p = new URLSearchParams(location.search);
+  const opt = p.get('opt');
+  if (opt) showOption(opt.toLowerCase());
+  if (p.get('embed') === '1') {
+    document.querySelector('.switcher').style.display = 'none';
+    var vt = document.querySelector('.viewport-toggle');
+    if (vt) vt.style.display = 'none';
+    document.querySelector('.mock-container').style.paddingTop = '0';
+  }
+})();
 </script>
 </body>
 </html>
