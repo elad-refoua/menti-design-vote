@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENTI Design Tokens — Current vs Proposed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=Figtree:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans Hebrew', 'Rubik', system-ui, sans-serif;
+  background: #f0ebe4; color: #3d3229; line-height: 1.6;
+  padding: 40px;
+}
+h1 { font-family: 'Figtree', sans-serif; font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 8px; direction: ltr; }
+.subtitle { text-align: center; font-size: 14px; color: #9a8b7d; margin-bottom: 48px; }
+
+.section { margin-bottom: 56px; }
+.section-title {
+  font-size: 18px; font-weight: 600; margin-bottom: 24px; padding-bottom: 12px;
+  border-bottom: 2px solid #e5ded6;
+}
+.compare-row { display: flex; gap: 32px; margin-bottom: 24px; flex-wrap: wrap; }
+.compare-col { flex: 1; min-width: 280px; }
+.compare-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+  color: #9a8b7d; margin-bottom: 12px;
+}
+
+/* ─── COLOR SWATCHES ─── */
+.swatch-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+.swatch {
+  width: 80px; text-align: center;
+}
+.swatch-circle {
+  width: 56px; height: 56px; border-radius: 50%; margin: 0 auto 6px;
+  border: 2px solid rgba(61,50,41,0.08);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.swatch-name { font-size: 10px; font-weight: 600; color: #3d3229; }
+.swatch-hex { font-size: 9px; color: #9a8b7d; font-family: 'JetBrains Mono', monospace; }
+
+/* ─── TYPOGRAPHY ─── */
+.type-sample { margin-bottom: 20px; padding: 20px; background: white; border-radius: 12px; border: 1px solid #e5ded6; }
+.type-meta { font-size: 10px; color: #9a8b7d; font-family: monospace; margin-top: 6px; }
+
+/* ─── SHADOWS ─── */
+.shadow-box {
+  width: 120px; height: 80px; background: white; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: #9a8b7d;
+}
+
+/* ─── BUTTONS ─── */
+.btn-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.btn-demo {
+  padding: 12px 28px; border-radius: 12px; font-family: inherit;
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16,1,0.3,1); border: none;
+}
+
+/* ─── GLASS CARDS ─── */
+.glass-demo-area {
+  padding: 40px; border-radius: 16px; position: relative;
+}
+.glass-demo-area::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  border-radius: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+}
+.glass-card-demo {
+  background: rgba(255,255,255,0.2); border: 1px solid rgba(26,15,8,0.06);
+  border-radius: 12px; padding: 24px; position: relative; z-index: 2;
+  max-width: 300px;
+}
+.no-glass-card {
+  background: white; border: 1px solid #e5ded6; border-radius: 16px;
+  padding: 24px; box-shadow: 0 2px 12px rgba(61,50,41,0.06);
+  max-width: 300px;
+}
+
+/* ─── ANIMATIONS ─── */
+.anim-box {
+  background: white; border-radius: 12px; padding: 20px; text-align: center;
+  border: 1px solid #e5ded6; min-width: 140px;
+}
+.anim-box .demo-el {
+  width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 10px;
+}
+.anim-label { font-size: 11px; color: #9a8b7d; }
+.anim-box .demo-el.play { animation-play-state: running; }
+
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes whisperIn { from { opacity: 0; transform: translateX(-10px) scale(0.98); } to { opacity: 1; transform: translateX(0) scale(1); } }
+@keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.04); opacity: 1; } }
+@keyframes pulseRing { 0% { box-shadow: 0 0 0 0 rgba(196,120,90,0.4); } 70% { box-shadow: 0 0 0 12px rgba(196,120,90,0); } 100% { box-shadow: 0 0 0 0 rgba(196,120,90,0); } }
+@keyframes ringFill { from { stroke-dashoffset: 188; } }
+
+/* ─── GRAIN TOGGLE ─── */
+.grain-toggle-area {
+  padding: 40px; border-radius: 16px; position: relative; transition: background 0.5s;
+}
+.grain-overlay-demo {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1; border-radius: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.04'/%3E%3C/svg%3E");
+  transition: opacity 0.5s;
+}
+
+/* ─── SECTION LABELS ─── */
+.section-label-demo {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 4px; opacity: 0.4;
+}
+.section-label-current {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #c4785a;
+}
+
+@media (max-width: 700px) {
+  body { padding: 20px; }
+  .compare-row { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<h1>MENTI Design Tokens</h1>
+<p class="subtitle">Current system vs. Proposed improvements — side by side comparison</p>
+
+<!-- ═══ COLORS ═══ -->
+<div class="section">
+  <div class="section-title">🎨 Color Palette</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current — Nature Distilled</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-circle" style="background:#c4785a"></div><div class="swatch-name">Terracotta</div><div class="swatch-hex">#c4785a</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#a65d3f"></div><div class="swatch-name">Terra Dark</div><div class="swatch-hex">#a65d3f</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#e8c4b4"></div><div class="swatch-name">Terra Light</div><div class="swatch-hex">#e8c4b4</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#f8f5f1"></div><div class="swatch-name">Cream</div><div class="swatch-hex">#f8f5f1</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#3d3229"></div><div class="swatch-name">Text</div><div class="swatch-hex">#3d3229</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#7b8fa6"></div><div class="swatch-name">Reflective</div><div class="swatch-hex">#7b8fa6</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#2d7a69"></div><div class="swatch-name">Success</div><div class="swatch-hex">#2d7a69</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#b94a4a"></div><div class="swatch-name">Danger</div><div class="swatch-hex">#b94a4a</div></div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed additions — Aura-inspired</div>
+      <div class="swatch-grid">
+        <div class="swatch"><div class="swatch-circle" style="background:#e8d4be"></div><div class="swatch-name">Sand</div><div class="swatch-hex">#e8d4be</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#2E4031"></div><div class="swatch-name">Sage</div><div class="swatch-hex">#2E4031</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#4B634F"></div><div class="swatch-name">Sage Glow</div><div class="swatch-hex">#4B634F</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#b27958"></div><div class="swatch-name">Rose Gold</div><div class="swatch-hex">#b27958</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:#d4a373"></div><div class="swatch-name">Rose Light</div><div class="swatch-hex">#d4a373</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:rgba(255,255,255,0.2)"></div><div class="swatch-name">Paper</div><div class="swatch-hex">rgba 0.2</div></div>
+        <div class="swatch"><div class="swatch-circle" style="background:rgba(26,15,8,0.08);border-color:rgba(26,15,8,0.15)"></div><div class="swatch-name">Border Soft</div><div class="swatch-hex">rgba 0.08</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TYPOGRAPHY ═══ -->
+<div class="section">
+  <div class="section-title">📝 Typography</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current</div>
+      <div class="type-sample">
+        <div style="font-size:24px;font-weight:700;font-family:'Figtree',sans-serif;">כותרת ראשית (Figtree 700)</div>
+        <div class="type-meta">font-size: 24px / weight: 700 / family: Figtree</div>
+      </div>
+      <div class="type-sample">
+        <div style="font-size:15px;font-weight:400;">טקסט גוף רגיל — הודעות צ'אט ותוכן</div>
+        <div class="type-meta">font-size: 15px / weight: 400 / family: Noto Sans Hebrew</div>
+      </div>
+      <div class="type-sample">
+        <div style="font-size:13px;font-weight:500;color:#6b5d52;">טקסט משני — תוויות ומטא</div>
+        <div class="type-meta">font-size: 13px / weight: 500 / color: #6b5d52</div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed — Aura-inspired</div>
+      <div class="type-sample" style="background:#e8d4be;">
+        <div style="font-size:28px;font-weight:300;color:#2E4031;line-height:1.4;">כותרת קלה (weight 300)</div>
+        <div class="type-meta">font-size: 28px / weight: 300 / color: sage #2E4031</div>
+      </div>
+      <div class="type-sample" style="background:#e8d4be;">
+        <div style="font-size:20px;font-weight:300;color:#2E4031;line-height:1.85;">טקסט בוט — גדול, אוורירי, קל</div>
+        <div class="type-meta">font-size: 20px / weight: 300 / line-height: 1.85</div>
+      </div>
+      <div class="type-sample" style="background:#e8d4be;">
+        <div class="section-label-demo" style="color:#1A0F08;">SECTION LABEL</div>
+        <div class="type-meta" style="margin-top:8px;">font-size: 10px / weight: 600 / uppercase / tracking: 4px / opacity: 0.4</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SHADOWS ═══ -->
+<div class="section">
+  <div class="section-title">🌗 Shadows</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current — 4-level warm RGBA</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div class="shadow-box" style="box-shadow:0 1px 3px rgba(61,50,41,0.06);">sm</div>
+        <div class="shadow-box" style="box-shadow:0 4px 6px rgba(61,50,41,0.08);">md</div>
+        <div class="shadow-box" style="box-shadow:0 8px 30px rgba(61,50,41,0.12);">lg</div>
+        <div class="shadow-box" style="box-shadow:0 12px 40px rgba(61,50,41,0.15);">xl</div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed — Ultra-subtle Aura</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;">
+        <div class="shadow-box" style="box-shadow:0 4px 12px rgba(0,0,0,0.02);">whisper</div>
+        <div class="shadow-box" style="box-shadow:0 10px 30px rgba(0,0,0,0.02);">glass</div>
+        <div class="shadow-box" style="box-shadow:0 0 20px rgba(178,121,88,0.3);">glow</div>
+        <div class="shadow-box" style="box-shadow:0 20px 60px rgba(0,0,0,0.04);">float</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BUTTONS ═══ -->
+<div class="section">
+  <div class="section-title">🔘 Buttons</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current</div>
+      <div class="btn-row">
+        <button class="btn-demo" style="background:linear-gradient(135deg,#c4785a,#a65d3f);color:white;">התחל סימולציה</button>
+        <button class="btn-demo" style="background:transparent;border:2px dashed #c4785a;color:#c4785a;">סימולציה חדשה</button>
+        <button class="btn-demo" style="background:#f0ebe4;color:#3d3229;border:1px solid #e5ded6;">ביטול</button>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed</div>
+      <div class="btn-row">
+        <button class="btn-demo" style="background:#b27958;color:white;border-radius:999px;padding:12px 32px;">התחל סימולציה</button>
+        <button class="btn-demo" style="background:rgba(255,255,255,0.2);color:#2E4031;border:1px solid rgba(26,15,8,0.08);border-radius:999px;">סימולציה חדשה</button>
+        <button class="btn-demo" style="background:transparent;color:rgba(26,15,8,0.5);font-size:13px;font-weight:400;">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GLASS CARDS ═══ -->
+<div class="section">
+  <div class="section-title">🪟 Glass Cards vs Solid Cards</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current — Solid white</div>
+      <div style="background:#f8f5f1;padding:32px;border-radius:16px;">
+        <div class="no-glass-card">
+          <div style="font-weight:600;margin-bottom:8px;">כרטיס רגיל</div>
+          <div style="font-size:14px;color:#6b5d52;">רקע לבן, גבול בהיר, צל עדין. מראה נקי וברור.</div>
+        </div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed — Glass on sand + grain</div>
+      <div class="glass-demo-area" style="background:#e8d4be;">
+        <div class="glass-card-demo">
+          <div style="font-weight:500;margin-bottom:8px;color:#2E4031;">כרטיס זכוכית</div>
+          <div style="font-size:14px;color:rgba(26,15,8,0.6);">רקע שקוף, גבול דק, grain overlay. מרגיש שקוף ואורגני.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GRAIN OVERLAY ═══ -->
+<div class="section">
+  <div class="section-title">🌾 Grain Overlay (Toggle)</div>
+  <div id="grain-demo" class="grain-toggle-area" style="background:#e8d4be;">
+    <div id="grain-layer" class="grain-overlay-demo"></div>
+    <div style="position:relative;z-index:2;text-align:center;">
+      <div style="font-size:24px;font-weight:300;color:#2E4031;margin-bottom:16px;">הרגישו את ההבדל</div>
+      <div style="font-size:14px;color:rgba(26,15,8,0.5);margin-bottom:20px;">SVG feTurbulence at 3.5-4% opacity — adds organic warmth</div>
+      <button onclick="toggleGrain()" class="btn-demo" style="background:rgba(255,255,255,0.3);color:#2E4031;border:1px solid rgba(26,15,8,0.1);border-radius:999px;position:relative;z-index:2;">Toggle Grain On/Off</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ANIMATIONS ═══ -->
+<div class="section">
+  <div class="section-title">✨ Animations</div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;">
+    <div class="anim-box">
+      <div class="demo-el" style="background:#c4785a;opacity:0;animation:fadeInUp 1.2s cubic-bezier(0.16,1,0.3,1) forwards infinite;"></div>
+      <div class="anim-label">fade-in-up<br><span style="font-size:9px;">1.2s ease-aura</span></div>
+    </div>
+    <div class="anim-box">
+      <div class="demo-el" style="background:#7b8fa6;opacity:0;animation:whisperIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards infinite;"></div>
+      <div class="anim-label">whisper-in<br><span style="font-size:9px;">0.5s ease-aura</span></div>
+    </div>
+    <div class="anim-box">
+      <div class="demo-el" style="background:#2E4031;animation:breathe 14s ease-in-out infinite;"></div>
+      <div class="anim-label">breathe<br><span style="font-size:9px;">14s infinite</span></div>
+    </div>
+    <div class="anim-box">
+      <div class="demo-el" style="background:#b27958;border-radius:50%;animation:pulseRing 2s infinite;"></div>
+      <div class="anim-label">pulse-ring<br><span style="font-size:9px;">2s infinite</span></div>
+    </div>
+    <div class="anim-box">
+      <svg width="48" height="48" viewBox="0 0 48 48" style="display:block;margin:0 auto 10px;">
+        <circle cx="24" cy="24" r="20" fill="none" stroke="#e5ded6" stroke-width="3"/>
+        <circle cx="24" cy="24" r="20" fill="none" stroke="#2E4031" stroke-width="3"
+          stroke-dasharray="126" stroke-dashoffset="25" stroke-linecap="round"
+          transform="rotate(-90 24 24)" style="animation:ringFill 2s ease-out forwards infinite;">
+        </circle>
+        <text x="24" y="28" text-anchor="middle" font-size="14" font-weight="300" fill="#2E4031">8</text>
+      </svg>
+      <div class="anim-label">score-ring<br><span style="font-size:9px;">2s ease-out</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION LABELS ═══ -->
+<div class="section">
+  <div class="section-title">🏷️ Section Labels</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current</div>
+      <div style="background:white;padding:24px;border-radius:12px;border:1px solid #e5ded6;">
+        <div class="section-label-current">הגדרות סוכנים</div>
+        <div class="type-meta" style="margin-top:8px;">12px / bold 700 / uppercase / tracking 1px / terracotta color</div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed — Aura section labels</div>
+      <div style="background:#e8d4be;padding:24px;border-radius:12px;">
+        <div class="section-label-demo" style="color:#1A0F08;">AGENT SETTINGS</div>
+        <div class="type-meta" style="margin-top:8px;">10px / semibold 600 / uppercase / tracking 4px / opacity 0.4</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ BORDER RADIUS ═══ -->
+<div class="section">
+  <div class="section-title">⭕ Border Radius Scale</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="width:60px;height:60px;background:#c4785a;border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">6px</div>
+        <div style="width:60px;height:60px;background:#c4785a;border-radius:10px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">10px</div>
+        <div style="width:60px;height:60px;background:#c4785a;border-radius:16px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">16px</div>
+        <div style="width:60px;height:60px;background:#c4785a;border-radius:20px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">20px</div>
+        <div style="width:80px;height:40px;background:#c4785a;border-radius:999px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">999px</div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed — keep current + add xl</div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="width:60px;height:60px;background:#2E4031;border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">8px</div>
+        <div style="width:60px;height:60px;background:#2E4031;border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">12px</div>
+        <div style="width:60px;height:60px;background:#2E4031;border-radius:16px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">16px</div>
+        <div style="width:60px;height:60px;background:#2E4031;border-radius:24px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">24px</div>
+        <div style="width:80px;height:40px;background:#2E4031;border-radius:999px;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;">pill</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EASING ─── -->
+<div class="section">
+  <div class="section-title">⚡ Easing Curves</div>
+  <div class="compare-row">
+    <div class="compare-col">
+      <div class="compare-label">Current: cubic-bezier(0.22, 1, 0.36, 1)</div>
+      <div style="background:white;padding:20px;border-radius:12px;border:1px solid #e5ded6;">
+        <div style="font-size:13px;color:#6b5d52;margin-bottom:8px;">--ease-out — smooth deceleration</div>
+        <div style="width:0;height:6px;background:#c4785a;border-radius:3px;animation:easeDemo1 2s cubic-bezier(0.22,1,0.36,1) infinite alternate;"></div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-label">Proposed: cubic-bezier(0.16, 1, 0.3, 1) — "ease-aura"</div>
+      <div style="background:#e8d4be;padding:20px;border-radius:12px;">
+        <div style="font-size:13px;color:rgba(26,15,8,0.5);margin-bottom:8px;">ease-aura — faster start, softer landing</div>
+        <div style="width:0;height:6px;background:#2E4031;border-radius:3px;animation:easeDemo1 2s cubic-bezier(0.16,1,0.3,1) infinite alternate;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes easeDemo1 { from { width: 0; } to { width: 100%; } }
+</style>
+
+<script>
+let grainOn = true;
+function toggleGrain() {
+  grainOn = !grainOn;
+  document.getElementById('grain-layer').style.opacity = grainOn ? 1 : 0;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENTI Welcome Screen Design Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=Figtree:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans Hebrew', 'Rubik', system-ui, sans-serif;
+  background: #f0ebe4;
+  color: #3d3229;
+  line-height: 1.6;
+}
+
+/* ─── SWITCHER ─── */
+.switcher {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(61,50,41,0.95); backdrop-filter: blur(12px);
+  z-index: 100; padding: 12px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  direction: ltr;
+}
+.switcher-label { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; }
+.switcher button {
+  padding: 8px 20px; border: 1px solid rgba(255,255,255,0.2);
+  background: transparent; color: rgba(255,255,255,0.7);
+  border-radius: 20px; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.3s; font-family: inherit;
+}
+.switcher button.active {
+  background: #c4785a; border-color: #c4785a; color: white;
+  box-shadow: 0 4px 14px rgba(196,120,90,0.4);
+}
+.switcher button:hover:not(.active) { border-color: rgba(255,255,255,0.5); color: white; }
+
+.viewport-toggle {
+  position: fixed; top: 56px; left: 0; right: 0;
+  background: rgba(61,50,41,0.85); backdrop-filter: blur(8px);
+  z-index: 99; padding: 8px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  direction: ltr;
+}
+.viewport-toggle button {
+  padding: 5px 14px; border: 1px solid rgba(255,255,255,0.15);
+  background: transparent; color: rgba(255,255,255,0.6);
+  border-radius: 14px; font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all 0.25s; font-family: inherit;
+}
+.viewport-toggle button.active { background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.3); }
+
+.mock-container { padding-top: 100px; display: flex; justify-content: center; gap: 40px; padding-bottom: 60px; flex-wrap: wrap; }
+.option { display: none; }
+.option.active { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+
+.mock-frame {
+  background: white; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(61,50,41,0.15);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 420px; flex-shrink: 0;
+}
+
+.desc-card {
+  background: white; border-radius: 16px; padding: 20px 24px;
+  margin-bottom: 20px; max-width: 420px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.desc-card h3 { font-size: 15px; font-weight: 700; color: #3d3229; margin-bottom: 8px; }
+.desc-card p { font-size: 13px; color: #6b5d52; line-height: 1.7; }
+.desc-card .tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 8px; margin-top: 8px; margin-left: 4px;
+}
+.tag-aura { background: #e8d4be; color: #8b6840; }
+.tag-minimal { background: #eef2f6; color: #4a5e78; }
+.tag-enhanced { background: #f5ebe6; color: #a65d3f; }
+
+/* ====================================================
+   OPTION A: AURA-INSPIRED — Sand, glass, grain
+   ==================================================== */
+.optA .welcome-wrap {
+  background: #e8d4be;
+  min-height: 700px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 50px 32px 32px;
+}
+.optA .grain {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/></svg>");
+}
+.optA .content { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; }
+.optA .section-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 4px; opacity: 0.3; color: #1A0F08; margin-bottom: 20px;
+}
+.optA .hero-title {
+  font-size: 32px; font-weight: 300; color: #1A0F08;
+  line-height: 1.5; margin-bottom: 8px;
+  animation: auraFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+.optA .hero-title strong { font-weight: 600; color: #b27958; }
+.optA .hero-sub {
+  font-size: 15px; font-weight: 400; color: #1A0F08; opacity: 0.5;
+  margin-bottom: 36px;
+  animation: auraFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.15s; opacity: 0;
+}
+.optA .glass-card {
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(26,15,8,0.06);
+  border-radius: 14px;
+  padding: 28px 24px;
+  backdrop-filter: blur(10px);
+  animation: auraFadeIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.3s; opacity: 0;
+}
+.optA .form-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 2px; color: #1A0F08; opacity: 0.4;
+  margin-bottom: 8px; display: block;
+}
+.optA .form-input {
+  width: 100%; padding: 14px 18px;
+  background: rgba(255,255,255,0.3);
+  border: 1px solid rgba(26,15,8,0.08);
+  border-radius: 10px; font-size: 15px;
+  font-family: inherit; color: #1A0F08;
+  outline: none; transition: all 0.3s;
+  margin-bottom: 20px;
+}
+.optA .form-input:focus {
+  background: rgba(255,255,255,0.5);
+  border-color: rgba(178,121,88,0.25);
+}
+.optA .form-input::placeholder { color: rgba(26,15,8,0.2); }
+.optA .gender-row { display: flex; gap: 10px; margin-bottom: 24px; }
+.optA .gender-pill {
+  flex: 1; padding: 12px; text-align: center;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(26,15,8,0.06);
+  border-radius: 10px; cursor: pointer;
+  font-size: 14px; font-weight: 400; color: #1A0F08; opacity: 0.6;
+  transition: all 0.3s;
+}
+.optA .gender-pill.selected {
+  border-color: rgba(178,121,88,0.3);
+  background: rgba(178,121,88,0.08);
+  opacity: 1; color: #b27958; font-weight: 500;
+}
+.optA .cta-btn {
+  width: 100%; padding: 16px;
+  background: #b27958; color: white;
+  border: none; border-radius: 12px;
+  font-size: 16px; font-weight: 500;
+  font-family: inherit; cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 6px 20px rgba(178,121,88,0.25);
+}
+.optA .cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(178,121,88,0.35);
+}
+.optA .safe-badge {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin-top: 16px;
+  font-size: 12px; color: #1A0F08; opacity: 0.3;
+}
+
+/* ====================================================
+   OPTION B: HEADSPACE-WARM — Gradient hero, bold cards
+   ==================================================== */
+.optB .welcome-wrap {
+  background: #faf8f6;
+  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+}
+.optB .hero {
+  background: linear-gradient(135deg, #c4785a 0%, #a65d3f 80%, #8b5035 100%);
+  padding: 48px 28px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.optB .hero::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  animation: pulse 4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50% { transform: scale(1.1); opacity: 0.3; }
+}
+.optB .hero-icon {
+  width: 72px; height: 72px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%; margin: 0 auto 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; backdrop-filter: blur(10px);
+  position: relative;
+}
+.optB .hero h1 {
+  font-size: 26px; font-weight: 700; color: white;
+  letter-spacing: -0.5px; margin-bottom: 6px; position: relative;
+}
+.optB .hero p {
+  color: rgba(255,255,255,0.85); font-size: 14px; position: relative;
+}
+.optB .hero .safe-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+  padding: 7px 14px; border-radius: 20px;
+  margin-top: 14px; font-size: 12px;
+  color: rgba(255,255,255,0.9); position: relative;
+}
+.optB .body { padding: 28px; flex: 1; }
+.optB .instructions-card {
+  background: linear-gradient(135deg, #f0ebe4 0%, #f0ebe5 100%);
+  border-radius: 12px; padding: 18px 20px;
+  margin-bottom: 24px; display: flex;
+  align-items: flex-start; gap: 12px;
+  border: 1px solid #e5ded6;
+}
+.optB .instructions-card .icon { font-size: 22px; }
+.optB .instructions-card p { font-size: 13px; color: #6b5d52; line-height: 1.7; }
+.optB .form-label {
+  display: block; margin-bottom: 8px; font-weight: 500;
+  color: #6b5d52; font-size: 14px;
+}
+.optB .form-input {
+  width: 100%; padding: 14px 16px;
+  background: #f0ebe4; border: 1px solid #e5ded6;
+  border-radius: 10px; font-size: 15px;
+  font-family: inherit; color: #3d3229;
+  outline: none; transition: all 0.2s;
+  margin-bottom: 20px;
+}
+.optB .form-input:focus {
+  border-color: #c4785a;
+  box-shadow: 0 0 0 4px rgba(196,120,90,0.15);
+}
+.optB .form-input::placeholder { color: #9a8b7d; }
+.optB .form-group { margin-bottom: 20px; }
+.optB .gender-row { display: flex; gap: 12px; }
+.optB .gender-card {
+  flex: 1; padding: 14px 16px;
+  background: #f0ebe4; border: 2px solid #e5ded6;
+  border-radius: 10px; text-align: center;
+  font-size: 14px; font-weight: 500; color: #6b5d52;
+  cursor: pointer; transition: all 0.2s;
+}
+.optB .gender-card.selected {
+  border-color: #c4785a;
+  background: rgba(196,120,90,0.1);
+  color: #c4785a; font-weight: 600;
+}
+.optB .cta-btn {
+  width: 100%; padding: 16px 28px;
+  background: linear-gradient(135deg, #c4785a 0%, #a65d3f 100%);
+  color: white; border: none; border-radius: 10px;
+  font-size: 16px; font-weight: 600;
+  font-family: inherit; cursor: pointer;
+  transition: all 0.25s;
+  box-shadow: 0 4px 14px rgba(196,120,90,0.35);
+  margin-top: 4px;
+}
+.optB .cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(196,120,90,0.45);
+}
+
+/* ====================================================
+   OPTION C: HYBRID — MENTI structure + Aura touches
+   ==================================================== */
+.optC .welcome-wrap {
+  background: #f8f5f1;
+  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+}
+.optC .hero {
+  background: linear-gradient(135deg, #c4785a 0%, #a65d3f 100%);
+  padding: 40px 28px 36px;
+  text-align: center;
+  position: relative;
+}
+.optC .hero h1 {
+  font-size: 24px; font-weight: 700; color: white;
+  margin-bottom: 6px; position: relative;
+}
+.optC .hero p {
+  color: rgba(255,255,255,0.85); font-size: 14px; position: relative;
+}
+.optC .body { padding: 28px; flex: 1; }
+.optC .steps-row {
+  display: flex; justify-content: center; gap: 24px;
+  margin-bottom: 28px;
+}
+.optC .step {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.optC .step-num {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, #c4785a 0%, #a65d3f 100%);
+  color: white; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 14px;
+  box-shadow: 0 3px 10px rgba(196,120,90,0.25);
+}
+.optC .step-text { font-size: 12px; color: #6b5d52; font-weight: 500; }
+.optC .form-label {
+  display: block; margin-bottom: 8px; font-weight: 500;
+  color: #6b5d52; font-size: 14px;
+}
+.optC .form-input {
+  width: 100%; padding: 14px 16px;
+  background: #f0ebe4; border: 1px solid #e5ded6;
+  border-radius: 10px; font-size: 15px;
+  font-family: inherit; color: #3d3229;
+  outline: none; transition: all 0.2s;
+  margin-bottom: 20px;
+}
+.optC .form-input:focus {
+  border-color: #c4785a;
+  box-shadow: 0 0 0 4px rgba(196,120,90,0.15);
+}
+.optC .form-input::placeholder { color: #9a8b7d; }
+.optC .gender-row { display: flex; gap: 12px; margin-bottom: 24px; }
+.optC .gender-card {
+  flex: 1; padding: 14px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(26,15,8,0.06);
+  border-radius: 12px; text-align: center;
+  font-size: 14px; font-weight: 400; color: #6b5d52;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.optC .gender-card.selected {
+  border-color: rgba(178,121,88,0.3);
+  background: rgba(178,121,88,0.06);
+  color: #b27958; font-weight: 500;
+}
+.optC .instructions-whisper {
+  background: rgba(255,255,255,0.3);
+  border: 1px solid rgba(26,15,8,0.05);
+  border-radius: 12px; padding: 16px 18px;
+  margin-bottom: 24px;
+  animation: auraFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.2s; opacity: 0;
+}
+.optC .instructions-whisper .wlabel {
+  font-size: 9px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 3px; color: #b27958; opacity: 0.5; margin-bottom: 6px;
+}
+.optC .instructions-whisper p {
+  font-size: 13px; color: #3d3229; opacity: 0.6; line-height: 1.7;
+}
+.optC .cta-btn {
+  width: 100%; padding: 16px;
+  background: #b27958; color: white;
+  border: none; border-radius: 12px;
+  font-size: 16px; font-weight: 500;
+  font-family: inherit; cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 6px 20px rgba(178,121,88,0.25);
+}
+.optC .cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(178,121,88,0.35);
+}
+.optC .safe-badge {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; margin-top: 14px;
+  font-size: 12px; color: #3d3229; opacity: 0.3;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes auraFadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <span class="switcher-label">Welcome Screen:</span>
+  <button class="active" onclick="showOption('A')">A: Aura Minimal</button>
+  <button onclick="showOption('B')">B: Headspace Warm</button>
+  <button onclick="showOption('C')">C: Hybrid</button>
+</div>
+<div class="viewport-toggle">
+  <button class="active" onclick="setViewport('desktop')">Desktop (420px)</button>
+  <button onclick="setViewport('mobile')">Mobile (375px)</button>
+</div>
+
+<div class="mock-container">
+
+<!-- OPTION A: AURA MINIMAL -->
+<div class="option active" id="opt-A">
+  <div class="desc-card">
+    <h3>Option A: Aura Minimal</h3>
+    <p>Sand background, grain overlay, glass-card form. Section-label typography (10px uppercase tracking 4px). Ultra-light title (weight 300, 32px). No gradient hero — clean space. Rose-gold accent. Feels like a therapy platform, not a chatbot.</p>
+    <span class="tag tag-aura">Aura-inspired</span>
+    <span class="tag tag-aura">Premium</span>
+  </div>
+  <div class="mock-frame optA" id="frameA">
+    <div class="welcome-wrap">
+      <div class="grain"></div>
+      <div class="content">
+        <div class="section-label">SIMULATION</div>
+        <div class="hero-title"><strong>MENTI</strong><br>&#1505;&#1497;&#1502;&#1493;&#1500;&#1510;&#1497;&#1492; &#1500;&#1488;&#1497;&#1502;&#1493;&#1503; &#1514;&#1511;&#1513;&#1493;&#1512;&#1514;</div>
+        <div class="hero-sub">&#1505;&#1489;&#1497;&#1489;&#1514; &#1514;&#1512;&#1490;&#1493;&#1500; &#1489;&#1496;&#1493;&#1495;&#1492;</div>
+        <div class="glass-card">
+          <label class="form-label">PARTICIPANT ID</label>
+          <input class="form-input" placeholder="&#1500;&#1491;&#1493;&#1490;&#1502;&#1492;: P001" readonly>
+          <label class="form-label">NAME (OPTIONAL)</label>
+          <input class="form-input" placeholder="&#1513;&#1501; &#1502;&#1513;&#1514;&#1514;&#1507;" readonly>
+          <label class="form-label">LANGUAGE</label>
+          <div class="gender-row">
+            <div class="gender-pill selected">&#1504;&#1511;&#1489;&#1492;</div>
+            <div class="gender-pill">&#1494;&#1499;&#1512;</div>
+          </div>
+          <button class="cta-btn">&#1492;&#1514;&#1495;&#1500; &#1505;&#1497;&#1502;&#1493;&#1500;&#1510;&#1497;&#1492;</button>
+          <div class="safe-badge">&#x1F512; &#1505;&#1489;&#1497;&#1489;&#1514; &#1514;&#1512;&#1490;&#1493;&#1500; &#1489;&#1496;&#1493;&#1495;&#1492;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OPTION B: HEADSPACE WARM -->
+<div class="option" id="opt-B">
+  <div class="desc-card">
+    <h3>Option B: Headspace Warm</h3>
+    <p>Bold gradient hero with pulsing circle animation, icon, and safe-space badge. Instruction card below. Current MENTI form fields with improved spacing. Familiar structure, elevated execution.</p>
+    <span class="tag tag-minimal">Familiar</span>
+    <span class="tag tag-minimal">Warm</span>
+  </div>
+  <div class="mock-frame optB" id="frameB">
+    <div class="welcome-wrap">
+      <div class="hero">
+        <div class="hero-icon">&#x1F4AC;</div>
+        <h1>MENTI</h1>
+        <p>&#1505;&#1497;&#1502;&#1493;&#1500;&#1510;&#1497;&#1492; &#1500;&#1488;&#1497;&#1502;&#1493;&#1503; &#1514;&#1511;&#1513;&#1493;&#1512;&#1514;</p>
+        <div class="safe-badge">&#x1F512; &#1505;&#1489;&#1497;&#1489;&#1514; &#1514;&#1512;&#1490;&#1493;&#1500; &#1489;&#1496;&#1493;&#1495;&#1492;</div>
+      </div>
+      <div class="body">
+        <div class="instructions-card">
+          <span class="icon">&#x1F4DD;</span>
+          <p>&#1489;&#1505;&#1497;&#1502;&#1493;&#1500;&#1510;&#1497;&#1492; &#1494;&#1493; &#1514;&#1504;&#1492;&#1500;&#1493; &#1513;&#1497;&#1495;&#1492; &#1506;&#1501; &#1491;&#1502;&#1493;&#1514; &#1502;&#1491;&#1493;&#1502;&#1492;. &#1504;&#1505;&#1493; &#1500;&#1492;&#1490;&#1497;&#1489; &#1489;&#1488;&#1493;&#1508;&#1503; &#1496;&#1489;&#1506;&#1497; &#1493;&#1514;&#1493;&#1502;&#1498; &#x2014; &#1488;&#1497;&#1503; &#1514;&#1513;&#1493;&#1489;&#1493;&#1514; &#1504;&#1499;&#1493;&#1504;&#1493;&#1514; &#1488;&#1493; &#1513;&#1490;&#1493;&#1497;&#1493;&#1514;.</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">&#1502;&#1505;&#1508;&#1512; &#1502;&#1513;&#1514;&#1514;&#1507;</label>
+          <input class="form-input" placeholder="&#1500;&#1491;&#1493;&#1490;&#1502;&#1492;: P001" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label">&#1513;&#1501; (&#1488;&#1493;&#1508;&#1510;&#1497;&#1493;&#1504;&#1500;&#1497;)</label>
+          <input class="form-input" placeholder="&#1513;&#1501; &#1502;&#1513;&#1514;&#1514;&#1507;" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label">&#1500;&#1513;&#1493;&#1503; &#1508;&#1504;&#1497;&#1492;</label>
+          <div class="gender-row">
+            <div class="gender-card selected">&#1504;&#1511;&#1489;&#1492;</div>
+            <div class="gender-card">&#1494;&#1499;&#1512;</div>
+          </div>
+        </div>
+        <button class="cta-btn">&#1492;&#1514;&#1495;&#1500; &#1505;&#1497;&#1502;&#1493;&#1500;&#1510;&#1497;&#1492; &#x2192;</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OPTION C: HYBRID -->
+<div class="option" id="opt-C">
+  <div class="desc-card">
+    <h3>Option C: Hybrid</h3>
+    <p>Compact gradient hero (no icon). Aura-style whisper card for instructions. Glass-style gender selection. Steps row. Rose-gold CTA. Combines MENTI's structure with Aura's refinement.</p>
+    <span class="tag tag-enhanced">Best of both</span>
+    <span class="tag tag-enhanced">Balanced</span>
+  </div>
+  <div class="mock-frame optC" id="frameC">
+    <div class="welcome-wrap">
+      <div class="hero">
+        <h1>MENTI</h1>
+        <p>&#1505;&#1497;&#1502;&#1493;&#1500;&#1510;&#1497;&#1492; &#1500;&#1488;&#1497;&#1502;&#1493;&#1503; &#1514;&#1511;&#1513;&#1493;&#1512;&#1514;</p>
+      </div>
+      <div class="body">
+        <div class="steps-row">
+          <div class="step"><div class="step-num">1</div><div class="step-text">&#1502;&#1500;&#1488; &#1508;&#1512;&#1496;&#1497;&#1501;</div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-text">&#1504;&#1492;&#1500; &#1513;&#1497;&#1495;&#1492;</div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-text">&#1511;&#1489;&#1500; &#1508;&#1497;&#1491;&#1489;&#1511;</div></div>
+        </div>
+        <div class="instructions-whisper">
+          <div class="wlabel">INSTRUCTIONS</div>
+          <p>&#1504;&#1505;&#1493; &#1500;&#1492;&#1490;&#1497;&#1489; &#1489;&#1488;&#1493;&#1508;&#1503; &#1496;&#1489;&#1506;&#1497; &#1493;&#1514;&#1493;&#1502;&#1498;. &#1488;&#1497;&#1503; &#1514;&#1513;&#1493;&#1489;&#1493;&#1514; &#1504;&#1499;&#1493;&#1504;&#1493;&#1514; &#1488;&#1493; &#1513;&#1490;&#1493;&#1497;&#1493;&#1514;.</p>
+        </div>
+        <label class="form-label">&#1502;&#1505;&#1508;&#1512; &#1502;&#1513;&#1514;&#1514;&#1507;</label>
+        <input class="form-input" placeholder="&#1500;&#1491;&#1493;&#1490;&#1502;&#1492;: P001" readonly>
+        <label class="form-label">&#1513;&#1501; (&#1488;&#1493;&#1508;&#1510;&#1497;&#1493;&#1504;&#1500;&#1497;)</label>
+        <input class="form-input" placeholder="&#1513;&#1501; &#1502;&#1513;&#1514;&#1514;&#1507;" readonly>
+        <label class="form-label">&#1500;&#1513;&#1493;&#1503; &#1508;&#1504;&#1497;&#1492;</label>
+        <div class="gender-row">
+          <div class="gender-card selected">&#1504;&#1511;&#1489;&#1492;</div>
+          <div class="gender-card">&#1494;&#1499;&#1512;</div>
+        </div>
+        <button class="cta-btn">&#1492;&#1514;&#1495;&#1500; &#1505;&#1497;&#1502;&#1493;&#1500;&#1510;&#1497;&#1492;</button>
+        <div class="safe-badge">&#x1F512; &#1505;&#1489;&#1497;&#1489;&#1514; &#1514;&#1512;&#1490;&#1493;&#1500; &#1489;&#1496;&#1493;&#1495;&#1492;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+function showOption(opt) {
+  document.querySelectorAll('.option').forEach(el => el.classList.remove('active'));
+  document.getElementById('opt-' + opt).classList.add('active');
+  document.querySelectorAll('.switcher button:not(.switcher-label)').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.includes(opt + ':'));
+  });
+}
+function setViewport(mode) {
+  document.querySelectorAll('.viewport-toggle button').forEach((btn, i) => {
+    btn.classList.toggle('active', ['desktop','mobile'][i] === mode);
+  });
+  document.querySelectorAll('.mock-frame').forEach(frame => {
+    frame.style.width = mode === 'mobile' ? '375px' : '420px';
+  });
+}
+</script>
+</body>
+</html>

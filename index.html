@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENTI Design Vote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f0ebe4;
+  --card: #ffffff;
+  --text: #3d3229;
+  --text-light: rgba(61,50,41,0.5);
+  --accent: #c4785a;
+  --accent-dark: #a65d3f;
+  --border: rgba(61,50,41,0.08);
+  --success: #2d7a69;
+  --elad-color: #c4785a;
+  --zohar-color: #7b8fa6;
+  --keren-color: #8b9a8e;
+}
+
+body {
+  font-family: 'Noto Sans Hebrew', 'Rubik', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ─── HEADER ─── */
+.site-header {
+  background: rgba(61,50,41,0.95);
+  backdrop-filter: blur(12px);
+  padding: 20px 24px;
+  text-align: center;
+  position: sticky; top: 0; z-index: 100;
+}
+.site-header h1 {
+  font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px;
+}
+.site-header p {
+  font-size: 13px; color: rgba(255,255,255,0.5);
+}
+
+/* ─── VOTER SELECTOR ─── */
+.voter-bar {
+  background: rgba(61,50,41,0.85);
+  backdrop-filter: blur(8px);
+  padding: 12px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  position: sticky; top: 72px; z-index: 99;
+}
+.voter-bar .label {
+  font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500;
+}
+.voter-btn {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 20px; border-radius: 999px;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: transparent; color: rgba(255,255,255,0.7);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: all 0.3s; font-family: inherit;
+}
+.voter-btn .avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: white;
+}
+.voter-btn[data-voter="elad"] .avatar { background: var(--elad-color); }
+.voter-btn[data-voter="zohar"] .avatar { background: var(--zohar-color); }
+.voter-btn[data-voter="keren"] .avatar { background: var(--keren-color); }
+
+.voter-btn.active {
+  border-color: white; color: white;
+  background: rgba(255,255,255,0.1);
+}
+.voter-btn:hover:not(.active) { border-color: rgba(255,255,255,0.4); }
+
+/* ─── NAV ─── */
+.section-nav {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  flex-wrap: wrap;
+  position: sticky; top: 120px; z-index: 98;
+}
+.nav-link {
+  padding: 6px 16px; border-radius: 999px; font-size: 12px; font-weight: 600;
+  color: var(--text-light); background: transparent;
+  border: 1px solid var(--border); cursor: pointer;
+  transition: all 0.25s; font-family: inherit; text-decoration: none;
+}
+.nav-link:hover { border-color: var(--accent); color: var(--accent); }
+.nav-link .check { color: var(--success); margin-right: 4px; }
+
+/* ─── CONTENT ─── */
+.content { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+/* ─── SECTION ─── */
+.vote-section {
+  margin-bottom: 48px;
+  scroll-margin-top: 180px;
+}
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; flex-wrap: wrap; gap: 8px;
+}
+.section-header h2 {
+  font-size: 22px; font-weight: 700; color: var(--text);
+}
+.section-header .mockup-link {
+  font-size: 13px; color: var(--accent); text-decoration: none;
+  font-weight: 600; padding: 6px 14px; border-radius: 10px;
+  background: rgba(196,120,90,0.08);
+  transition: all 0.25s;
+}
+.section-header .mockup-link:hover { background: rgba(196,120,90,0.15); }
+
+/* ─── OPTIONS ROW ─── */
+.options-row {
+  display: grid;
+  gap: 20px;
+}
+.options-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.options-row.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+@media (max-width: 900px) {
+  .options-row.cols-3 { grid-template-columns: 1fr; }
+  .options-row.cols-2 { grid-template-columns: 1fr; }
+}
+
+/* ─── OPTION CARD ─── */
+.option-card {
+  background: var(--card); border-radius: 16px; overflow: hidden;
+  border: 2px solid var(--border);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.option-card:hover { border-color: rgba(196,120,90,0.25); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.option-card.selected { border-color: var(--accent); box-shadow: 0 8px 30px rgba(196,120,90,0.2); }
+
+.option-card .iframe-wrap {
+  width: 100%; height: 400px; overflow: hidden; position: relative;
+  background: #f8f5f1;
+}
+.option-card .iframe-wrap iframe {
+  width: 200%; height: 200%;
+  transform: scale(0.5); transform-origin: top right;
+  border: none; pointer-events: none;
+}
+.option-card .iframe-wrap .iframe-overlay {
+  position: absolute; inset: 0; z-index: 1;
+}
+
+.option-card .card-body {
+  padding: 16px 20px;
+}
+.option-card .card-body h3 {
+  font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px;
+}
+.option-card .card-body p {
+  font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 12px;
+}
+
+.vote-row {
+  display: flex; align-items: center; justify-content: space-between;
+}
+
+.vote-btn {
+  padding: 8px 20px; border-radius: 10px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  border: 2px solid var(--border); background: transparent;
+  color: var(--text-light); transition: all 0.25s; font-family: inherit;
+}
+.vote-btn:hover { border-color: var(--accent); color: var(--accent); }
+.vote-btn.voted {
+  background: var(--accent); border-color: var(--accent); color: white;
+}
+
+.voter-dots {
+  display: flex; gap: 6px; align-items: center;
+}
+.voter-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: white;
+  opacity: 0.3; transition: opacity 0.3s;
+}
+.voter-dot.active { opacity: 1; }
+.voter-dot[data-v="elad"] { background: var(--elad-color); }
+.voter-dot[data-v="zohar"] { background: var(--zohar-color); }
+.voter-dot[data-v="keren"] { background: var(--keren-color); }
+
+/* ─── RESULTS TABLE ─── */
+.results-section {
+  background: var(--card); border-radius: 16px; padding: 24px;
+  border: 1px solid var(--border); margin-bottom: 48px;
+}
+.results-section h2 {
+  font-size: 20px; font-weight: 700; margin-bottom: 16px;
+}
+.results-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 14px;
+}
+.results-table th {
+  text-align: right; padding: 10px 12px;
+  background: rgba(61,50,41,0.04); font-weight: 600;
+  border-bottom: 2px solid var(--border);
+}
+.results-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--border);
+}
+.results-table .match { color: var(--success); font-weight: 600; }
+.results-table .pending { color: var(--text-light); font-style: italic; }
+
+/* ─── NO VOTER WARNING ─── */
+.no-voter-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(61,50,41,0.8); backdrop-filter: blur(6px);
+  align-items: center; justify-content: center;
+}
+.no-voter-overlay.show { display: flex; }
+.no-voter-box {
+  background: white; border-radius: 20px; padding: 32px 40px;
+  text-align: center; max-width: 400px;
+}
+.no-voter-box h2 { font-size: 20px; margin-bottom: 12px; }
+.no-voter-box p { font-size: 14px; color: var(--text-light); margin-bottom: 20px; }
+
+/* ─── STATUS BAR ─── */
+.status-bar {
+  background: rgba(45,122,105,0.08);
+  border: 1px solid rgba(45,122,105,0.15);
+  border-radius: 12px; padding: 12px 20px;
+  margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px; color: var(--success); font-weight: 600;
+}
+.status-bar .progress {
+  font-size: 12px; font-weight: 400; color: var(--text-light);
+}
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <h1>MENTI Design Vote</h1>
+  <p>בחרו את הכיוון העיצובי המועדף — כל הצבעה נשמרת אוטומטית</p>
+</div>
+
+<div class="voter-bar">
+  <span class="label">מי את/ה?</span>
+  <button class="voter-btn" data-voter="elad" onclick="selectVoter('elad')">
+    <span class="avatar">א</span> אלעד
+  </button>
+  <button class="voter-btn" data-voter="zohar" onclick="selectVoter('zohar')">
+    <span class="avatar">ז</span> זוהר
+  </button>
+  <button class="voter-btn" data-voter="keren" onclick="selectVoter('keren')">
+    <span class="avatar">ק</span> קרן
+  </button>
+</div>
+
+<div class="section-nav" id="section-nav"></div>
+
+<div class="content">
+  <div class="status-bar" id="status-bar">
+    <span id="status-text">בחרו את שמכם למעלה כדי להתחיל</span>
+    <span class="progress" id="status-progress"></span>
+  </div>
+
+  <!-- Sections will be rendered by JS -->
+  <div id="sections-container"></div>
+
+  <div class="results-section" id="results-section">
+    <h2>סיכום הצבעות</h2>
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>קטגוריה</th>
+          <th>אלעד</th>
+          <th>זוהר</th>
+          <th>קרן</th>
+          <th>הסכמה</th>
+        </tr>
+      </thead>
+      <tbody id="results-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- No voter overlay -->
+<div class="no-voter-overlay" id="no-voter-overlay">
+  <div class="no-voter-box">
+    <h2>מי את/ה?</h2>
+    <p>בחרו את שמכם כדי להתחיל להצביע</p>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button class="voter-btn" data-voter="elad" onclick="selectVoter('elad')" style="color:#3d3229;border-color:var(--elad-color);">
+        <span class="avatar">א</span> אלעד
+      </button>
+      <button class="voter-btn" data-voter="zohar" onclick="selectVoter('zohar')" style="color:#3d3229;border-color:var(--zohar-color);">
+        <span class="avatar">ז</span> זוהר
+      </button>
+      <button class="voter-btn" data-voter="keren" onclick="selectVoter('keren')" style="color:#3d3229;border-color:var(--keren-color);">
+        <span class="avatar">ק</span> קרן
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API_URL = 'https://menti-api-333637302786.me-west1.run.app/api/votes';
+const MOCKUP_BASE = ''; // same directory
+
+let currentVoter = localStorage.getItem('menti_design_voter') || null;
+let allVotes = {};
+
+// ─── SECTION DEFINITIONS ───
+const SECTIONS = [
+  {
+    id: 'welcome',
+    title: 'מסך פתיחה',
+    mockupFile: 'mock-welcome-options.html',
+    options: [
+      { key: 'A', title: 'A: Aura Minimal', desc: 'רקע חולי, grain overlay, כרטיס זכוכית, טיפוגרפיה קלה (300 weight), section labels — תחושת פלטפורמה טיפולית פרימיום', hashParam: '' },
+      { key: 'B', title: 'B: Headspace Warm', desc: 'גרדיאנט hero בולט עם אנימציה, badge "סביבה בטוחה", כרטיס הוראות — חם ומוכר, מבנה MENTI קיים', hashParam: '' },
+      { key: 'C', title: 'C: Hybrid', desc: 'Hero קומפקטי, כרטיס whisper להוראות, בחירת מגדר בסגנון זכוכית, שלבים 1→2→3 — שילוב הטוב משניהם', hashParam: '' },
+    ]
+  },
+  {
+    id: 'chat',
+    title: 'מסך שיחה',
+    mockupFile: 'mock-chat-options.html',
+    options: [
+      { key: 'A', title: 'A: Aura Whisper', desc: 'רקע חולי + grain, טקסט בוט קל (300 weight, 20px), בועות זכוכית, מנטור ככרטיס whisper צף — פרימיום', hashParam: '' },
+      { key: 'B', title: 'B: Immersive Minimal', desc: 'אווטאר עגול, כרטיסי הודעות לבנים, בועות גרדיאנט למשתמש, מנטור ככרטיס עם badge, input pill — מודרני', hashParam: '' },
+      { key: 'C', title: 'C: Current Enhanced', desc: 'עיצוב MENTI הנוכחי משופר — אותו border-right, אותו layout, ריווח טוב יותר, צללים עדינים — שינוי מינימלי', hashParam: '' },
+    ]
+  },
+  {
+    id: 'feedback',
+    title: 'מסך פידבק',
+    mockupFile: 'mock-feedback-options.html',
+    options: [
+      { key: 'A', title: 'A: Score Rings + Golden Moments', desc: 'טבעות SVG רדיאליות (sage/rose-gold), ציטוטי שיחה עם הסברי "למה", אנימציות stagger, grain — פרימיום', hashParam: '' },
+      { key: 'B', title: 'B: Structured Report', desc: 'header גרדיאנט, כרטיס סיכום ציונים, סעיפים דו-צבעיים (sage לחוזקות, rose-gold לשיפורים), פעולות ממוספרות', hashParam: '' },
+      { key: 'C', title: 'C: Card Accordion', desc: 'כרטיסים לבנים מתרחבים לכל ממד, סיכום עם עיגול ציון, pills לציונים, לחיצה לפתיחה — סריקה מהירה', hashParam: '' },
+    ]
+  },
+  {
+    id: 'simselect',
+    title: 'בחירת סימולציה',
+    mockupFile: 'mock-simulation-options.html',
+    options: [
+      { key: 'A', title: 'A: Aura Module Grid', desc: 'רשת כרטיסים עם תמונות ב-3:4, badge סטטוס (DONE/IN PROGRESS), מנעול לסימולציות נעולות, אנימציות cascade — פרימיום', hashParam: '' },
+      { key: 'B', title: 'B: Compact Card List', desc: 'רשימה אופקית — אייקון + כותרת + תיאור + pill סטטוס + חץ, סינון לפי סוג טיפול — יעיל ותכליתי', hashParam: '' },
+      { key: 'C', title: 'C: Current Enhanced', desc: 'דרופדאון משופר + כרטיס תצוגה מקדימה עם תמונה, תיאור ומטא-דאטה — שינוי מינימלי, סיכון נמוך', hashParam: '' },
+    ]
+  },
+  {
+    id: 'tokens',
+    title: 'שפת עיצוב (Design Tokens)',
+    mockupFile: 'mock-components.html',
+    options: [
+      { key: 'current', title: 'Nature Distilled (נוכחי)', desc: 'הפלטה הנוכחית — כבד (700 weight), צללים חמים, 4 רמות צל, גבולות 6-20px, easing קיים — עובד היום' },
+      { key: 'proposed', title: 'Aura-Inspired (מוצע)', desc: 'תוספת sand/sage/rose-gold, טיפוגרפיה קלה (300 weight), צללים דקיקים, grain overlay, section labels, easing חדש — שדרוג משמעותי' },
+    ]
+  },
+  {
+    id: 'mobile',
+    title: 'כיוון מובייל',
+    mockupFile: 'mock-mobile-options.html',
+    options: [
+      { key: 'refined', title: 'שיפור הנוכחי', desc: 'שמירה על המבנה הקיים עם שיפורי ריווח, touch targets, ו-safe areas — שינוי מינימלי, תוצאה מיידית' },
+      { key: 'redesign', title: 'עיצוב מחדש (Aura)', desc: 'רקע חולי, grain, whisper cards למנטור, טבעות ציון, glass forms — חוויה פרימיום אחידה בדסקטופ ומובייל' },
+    ]
+  }
+];
+
+// ─── RENDER SECTIONS ───
+function renderSections() {
+  const container = document.getElementById('sections-container');
+  const nav = document.getElementById('section-nav');
+  let html = '';
+  let navHtml = '';
+
+  SECTIONS.forEach(section => {
+    const colClass = section.options.length <= 2 ? 'cols-2' : 'cols-3';
+    navHtml += `<a href="#section-${section.id}" class="nav-link" id="nav-${section.id}"><span class="check" id="check-${section.id}"></span>${section.title}</a>`;
+
+    html += `<div class="vote-section" id="section-${section.id}">`;
+    html += `<div class="section-header">`;
+    html += `<h2>${section.title}</h2>`;
+    if (section.mockupFile) {
+      html += `<a href="${MOCKUP_BASE}${section.mockupFile}" target="_blank" class="mockup-link">צפה במוקאפ המלא &larr;</a>`;
+    }
+    html += `</div>`;
+
+    html += `<div class="options-row ${colClass}">`;
+    section.options.forEach(opt => {
+      html += `<div class="option-card" id="card-${section.id}-${opt.key}" onclick="vote('${section.id}','${opt.key}')">`;
+
+      // Iframe preview
+      if (section.mockupFile) {
+        html += `<div class="iframe-wrap">`;
+        html += `<iframe src="${MOCKUP_BASE}${section.mockupFile}${opt.hashParam || ''}" loading="lazy" sandbox="allow-scripts"></iframe>`;
+        html += `<div class="iframe-overlay" title="לחצו להצביע"></div>`;
+        html += `</div>`;
+      }
+
+      html += `<div class="card-body">`;
+      html += `<h3>${opt.title}</h3>`;
+      html += `<p>${opt.desc}</p>`;
+      html += `<div class="vote-row">`;
+      html += `<button class="vote-btn" id="btn-${section.id}-${opt.key}" onclick="event.stopPropagation(); vote('${section.id}','${opt.key}')">הצבע</button>`;
+      html += `<div class="voter-dots">`;
+      html += `<div class="voter-dot" data-v="elad" id="dot-${section.id}-${opt.key}-elad">א</div>`;
+      html += `<div class="voter-dot" data-v="zohar" id="dot-${section.id}-${opt.key}-zohar">ז</div>`;
+      html += `<div class="voter-dot" data-v="keren" id="dot-${section.id}-${opt.key}-keren">ק</div>`;
+      html += `</div>`;
+      html += `</div>`;
+      html += `</div>`;
+      html += `</div>`;
+    });
+    html += `</div>`;
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+  nav.innerHTML = navHtml;
+}
+
+// ─── VOTER SELECTION ───
+function selectVoter(name) {
+  currentVoter = name;
+  localStorage.setItem('menti_design_voter', name);
+  document.getElementById('no-voter-overlay').classList.remove('show');
+
+  document.querySelectorAll('.voter-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.voter === name);
+  });
+
+  updateUI();
+}
+
+// ─── VOTE ───
+async function vote(category, choice) {
+  if (!currentVoter) {
+    document.getElementById('no-voter-overlay').classList.add('show');
+    return;
+  }
+
+  // Optimistic update
+  if (!allVotes[currentVoter]) allVotes[currentVoter] = {};
+  allVotes[currentVoter][category] = choice;
+  updateUI();
+
+  try {
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ voter: currentVoter, category, choice }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      allVotes = data.votes || allVotes;
+      updateUI();
+    }
+  } catch (err) {
+    console.warn('Vote save failed, using local state:', err);
+    // Keep optimistic update
+  }
+}
+
+// ─── LOAD VOTES ───
+async function loadVotes() {
+  try {
+    const res = await fetch(API_URL);
+    if (res.ok) {
+      allVotes = await res.json();
+    }
+  } catch (err) {
+    console.warn('Could not load votes:', err);
+  }
+  updateUI();
+}
+
+// ─── UPDATE UI ───
+function updateUI() {
+  const voters = ['elad', 'zohar', 'keren'];
+
+  SECTIONS.forEach(section => {
+    let sectionVoted = false;
+
+    section.options.forEach(opt => {
+      const card = document.getElementById(`card-${section.id}-${opt.key}`);
+      const btn = document.getElementById(`btn-${section.id}-${opt.key}`);
+      if (!card || !btn) return;
+
+      const isMyVote = currentVoter && allVotes[currentVoter] && allVotes[currentVoter][section.id] === opt.key;
+      card.classList.toggle('selected', isMyVote);
+      btn.classList.toggle('voted', isMyVote);
+      btn.textContent = isMyVote ? 'הבחירה שלי' : 'הצבע';
+
+      if (isMyVote) sectionVoted = true;
+
+      // Voter dots
+      voters.forEach(v => {
+        const dot = document.getElementById(`dot-${section.id}-${opt.key}-${v}`);
+        if (dot) {
+          const voted = allVotes[v] && allVotes[v][section.id] === opt.key;
+          dot.classList.toggle('active', voted);
+        }
+      });
+    });
+
+    // Nav check
+    const check = document.getElementById(`check-${section.id}`);
+    if (check) check.textContent = sectionVoted ? '\u2713 ' : '';
+  });
+
+  // Status bar
+  const statusText = document.getElementById('status-text');
+  const statusProgress = document.getElementById('status-progress');
+  if (currentVoter) {
+    const myVotes = allVotes[currentVoter] || {};
+    const votedCount = Object.keys(myVotes).length;
+    const total = SECTIONS.length;
+    const voterNames = { elad: 'אלעד', zohar: 'זוהר', keren: 'קרן' };
+    statusText.textContent = `${voterNames[currentVoter]}, הצבעת ב-${votedCount} מתוך ${total} קטגוריות`;
+    statusProgress.textContent = votedCount === total ? 'הושלם!' : `${total - votedCount} נותרו`;
+  }
+
+  // Results table
+  renderResults();
+}
+
+// ─── RESULTS TABLE ───
+function renderResults() {
+  const tbody = document.getElementById('results-body');
+  const voterNames = { elad: 'אלעד', zohar: 'זוהר', keren: 'קרן' };
+  let html = '';
+
+  SECTIONS.forEach(section => {
+    const eVote = (allVotes.elad || {})[section.id] || null;
+    const zVote = (allVotes.zohar || {})[section.id] || null;
+    const kVote = (allVotes.keren || {})[section.id] || null;
+
+    const allSame = eVote && zVote && kVote && eVote === zVote && zVote === kVote;
+    const consensus = allSame ? `<span class="match">${eVote}</span>` : (eVote || zVote || kVote ? 'טרם הוכרע' : '-');
+
+    html += `<tr>`;
+    html += `<td><strong>${section.title}</strong></td>`;
+    html += `<td class="${eVote ? '' : 'pending'}">${eVote || 'טרם הצביע'}</td>`;
+    html += `<td class="${zVote ? '' : 'pending'}">${zVote || 'טרם הצביע'}</td>`;
+    html += `<td class="${kVote ? '' : 'pending'}">${kVote || 'טרם הצביע'}</td>`;
+    html += `<td>${consensus}</td>`;
+    html += `</tr>`;
+  });
+
+  tbody.innerHTML = html;
+}
+
+// ─── INIT ───
+renderSections();
+if (currentVoter) selectVoter(currentVoter);
+else document.getElementById('no-voter-overlay').classList.add('show');
+loadVotes();
+
+// Refresh votes every 15 seconds
+setInterval(loadVotes, 15000);
+</script>
+</body>
+</html>

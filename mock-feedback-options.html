@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENTI Feedback Screen Design Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=Figtree:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans Hebrew', 'Rubik', system-ui, sans-serif;
+  background: #f0ebe4;
+  color: #3d3229;
+  line-height: 1.6;
+}
+
+/* ─── SWITCHER ─── */
+.switcher {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(61,50,41,0.95); backdrop-filter: blur(12px);
+  z-index: 100; padding: 12px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  direction: ltr;
+}
+.switcher-label { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; }
+.switcher button {
+  padding: 8px 20px; border: 1px solid rgba(255,255,255,0.2);
+  background: transparent; color: rgba(255,255,255,0.7);
+  border-radius: 20px; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.3s; font-family: inherit;
+}
+.switcher button.active {
+  background: #c4785a; border-color: #c4785a; color: white;
+  box-shadow: 0 4px 14px rgba(196,120,90,0.4);
+}
+.switcher button:hover:not(.active) { border-color: rgba(255,255,255,0.5); color: white; }
+
+.viewport-toggle {
+  position: fixed; top: 56px; left: 0; right: 0;
+  background: rgba(61,50,41,0.85); backdrop-filter: blur(8px);
+  z-index: 99; padding: 8px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  direction: ltr;
+}
+.viewport-toggle button {
+  padding: 5px 14px; border: 1px solid rgba(255,255,255,0.15);
+  background: transparent; color: rgba(255,255,255,0.6);
+  border-radius: 14px; font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; font-family: inherit;
+}
+.viewport-toggle button.active {
+  background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.3);
+}
+
+/* ─── LAYOUT ─── */
+.options-container { padding: 110px 40px 60px; }
+.option { display: none; }
+.option.active { display: flex; gap: 40px; justify-content: center; align-items: flex-start; }
+.description-panel {
+  max-width: 340px; position: sticky; top: 120px;
+}
+.description-panel h3 { font-size: 20px; margin-bottom: 12px; font-weight: 600; }
+.description-panel p { font-size: 14px; line-height: 1.7; color: #6b5d52; margin-bottom: 16px; }
+.tag { display: inline-block; padding: 4px 12px; border: 1px solid #d4c8bb; border-radius: 14px; font-size: 12px; color: #6b5d52; margin-left: 6px; }
+
+.preview-frame {
+  width: 480px; min-height: 600px;
+  background: #ffffff; border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(61,50,41,0.12);
+  overflow: hidden; transition: width 0.4s cubic-bezier(0.16,1,0.3,1);
+  overflow-y: auto; max-height: 85vh;
+}
+.preview-frame.mobile { width: 375px; }
+
+/* ═══════════════════════════════════════════════════════════════
+   OPTION A: Score Rings + Golden Moments (Aura-inspired)
+   ═══════════════════════════════════════════════════════════════ */
+.opt-a { background: #e8d4be; padding: 0; position: relative; }
+.opt-a::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+}
+.opt-a * { position: relative; z-index: 2; }
+.opt-a .fb-header {
+  padding: 40px 32px 24px; text-align: center;
+}
+.opt-a .fb-section-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 4px; color: rgba(26,15,8,0.35); margin-bottom: 12px;
+}
+.opt-a .fb-title {
+  font-size: 28px; font-weight: 300; color: #2E4031;
+  line-height: 1.4; margin-bottom: 8px;
+}
+.opt-a .fb-subtitle {
+  font-size: 14px; font-weight: 400; color: rgba(26,15,8,0.5);
+}
+
+/* Score Rings */
+.opt-a .rings-row {
+  display: flex; justify-content: center; gap: 24px;
+  padding: 8px 32px 32px; flex-wrap: wrap;
+}
+.opt-a .ring-item { text-align: center; }
+.opt-a .ring-item svg { width: 80px; height: 80px; }
+.opt-a .ring-label {
+  font-size: 12px; font-weight: 500; color: rgba(26,15,8,0.6); margin-top: 8px;
+}
+.opt-a .ring-score {
+  font-size: 20px; font-weight: 300; fill: #2E4031;
+}
+
+/* Golden Moments */
+.opt-a .golden-section {
+  padding: 0 32px 32px;
+}
+.opt-a .golden-card {
+  background: rgba(255,255,255,0.25); border: 1px solid rgba(26,15,8,0.06);
+  border-radius: 12px; padding: 20px; margin-bottom: 16px;
+}
+.opt-a .golden-type {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+.opt-a .golden-type.effective { color: #2E4031; }
+.opt-a .golden-type.growth { color: #b27958; }
+.opt-a .golden-quote {
+  font-size: 14px; font-weight: 400; color: rgba(26,15,8,0.7);
+  border-right: 2px solid rgba(26,15,8,0.1); padding-right: 14px;
+  margin-bottom: 10px; line-height: 1.7;
+}
+.opt-a .golden-why {
+  font-size: 13px; font-weight: 300; color: rgba(26,15,8,0.55);
+  line-height: 1.6;
+}
+.opt-a .golden-alt {
+  font-size: 13px; font-weight: 400; color: #2E4031;
+  background: rgba(46,64,49,0.06); border-radius: 8px;
+  padding: 10px 14px; margin-top: 10px;
+}
+
+/* Action Items */
+.opt-a .actions-section {
+  padding: 0 32px 40px;
+}
+.opt-a .action-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(26,15,8,0.06);
+}
+.opt-a .action-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(178,121,88,0.12); display: flex; align-items: center;
+  justify-content: center; font-size: 13px; flex-shrink: 0; margin-top: 2px;
+}
+.opt-a .action-text {
+  font-size: 14px; font-weight: 400; color: rgba(26,15,8,0.7); line-height: 1.6;
+}
+
+/* Detailed Feedback (collapsed) */
+.opt-a .detail-section { padding: 0 32px 40px; }
+.opt-a .detail-toggle {
+  width: 100%; background: rgba(255,255,255,0.2); border: 1px solid rgba(26,15,8,0.06);
+  border-radius: 10px; padding: 14px 18px;
+  font-family: inherit; font-size: 14px; color: rgba(26,15,8,0.6);
+  cursor: pointer; text-align: right; transition: all 0.3s;
+}
+.opt-a .detail-toggle:hover { background: rgba(255,255,255,0.35); }
+
+/* ═══════════════════════════════════════════════════════════════
+   OPTION B: Structured Report (Aura sections)
+   ═══════════════════════════════════════════════════════════════ */
+.opt-b { background: #f8f5f1; padding: 0; }
+.opt-b .fb-header {
+  background: linear-gradient(135deg, #c4785a 0%, #a65d3f 100%);
+  padding: 32px; text-align: center; color: white;
+}
+.opt-b .fb-header h2 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+.opt-b .fb-header p { font-size: 14px; opacity: 0.85; }
+
+/* Summary card */
+.opt-b .summary-card {
+  margin: -16px 24px 24px; background: white; border-radius: 14px;
+  padding: 24px; box-shadow: 0 4px 20px rgba(61,50,41,0.08);
+  position: relative; z-index: 2;
+}
+.opt-b .overall-score {
+  text-align: center; margin-bottom: 20px;
+}
+.opt-b .overall-number {
+  font-size: 48px; font-weight: 700; color: #c4785a;
+  line-height: 1;
+}
+.opt-b .overall-label {
+  font-size: 13px; color: #9a8b7d; margin-top: 4px;
+}
+.opt-b .bars-grid { display: flex; flex-direction: column; gap: 12px; }
+.opt-b .bar-row { display: flex; align-items: center; gap: 12px; }
+.opt-b .bar-label { min-width: 110px; font-size: 13px; font-weight: 500; color: #3d3229; text-align: start; }
+.opt-b .bar-track { flex: 1; height: 8px; background: #f0ebe4; border-radius: 4px; overflow: hidden; }
+.opt-b .bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease-out; }
+.opt-b .bar-fill.high { background: linear-gradient(90deg, #2d7a69, #4ca88d); }
+.opt-b .bar-fill.mid { background: linear-gradient(90deg, #c49a6c, #d4b88a); }
+.opt-b .bar-fill.low { background: linear-gradient(90deg, #b94a4a, #d06868); }
+.opt-b .bar-value { min-width: 32px; font-size: 13px; font-weight: 700; color: #3d3229; text-align: center; }
+
+/* Strengths section (sage) */
+.opt-b .section-strengths {
+  margin: 0 24px 16px; background: rgba(46,64,49,0.04);
+  border-right: 3px solid #2E4031; border-radius: 12px; padding: 20px;
+}
+.opt-b .section-title {
+  font-size: 15px; font-weight: 600; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.opt-b .section-strengths .section-title { color: #2E4031; }
+.opt-b .section-text { font-size: 14px; line-height: 1.8; color: #4a4a4a; }
+
+/* Improvements section (rose-gold) */
+.opt-b .section-improvements {
+  margin: 0 24px 16px; background: rgba(178,121,88,0.04);
+  border-right: 3px solid #b27958; border-radius: 12px; padding: 20px;
+}
+.opt-b .section-improvements .section-title { color: #b27958; }
+
+/* Action items */
+.opt-b .section-actions {
+  margin: 0 24px 24px; background: white; border-radius: 12px;
+  padding: 20px; border: 1px solid #e5ded6;
+}
+.opt-b .action-item-b {
+  display: flex; gap: 12px; padding: 10px 0;
+  border-bottom: 1px solid #f0ebe4;
+}
+.opt-b .action-item-b:last-child { border-bottom: none; }
+.opt-b .action-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: linear-gradient(135deg, #c4785a, #a65d3f);
+  color: white; font-size: 12px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.opt-b .action-text-b { font-size: 14px; color: #3d3229; line-height: 1.6; }
+
+/* New simulation button */
+.opt-b .new-sim-btn {
+  display: block; margin: 0 24px 32px; padding: 14px;
+  background: linear-gradient(135deg, #c4785a 0%, #a65d3f 100%);
+  color: white; border: none; border-radius: 12px;
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  cursor: pointer; text-align: center; width: calc(100% - 48px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OPTION C: Card-Based Accordion
+   ═══════════════════════════════════════════════════════════════ */
+.opt-c { background: #faf8f6; padding: 0; }
+.opt-c .fb-header {
+  padding: 32px 24px; text-align: center;
+  background: #faf8f6; border-bottom: 1px solid #e5ded6;
+}
+.opt-c .fb-header h2 {
+  font-size: 20px; font-weight: 600; color: #3d3229; margin-bottom: 4px;
+}
+.opt-c .fb-header .sim-info {
+  font-size: 13px; color: #9a8b7d;
+}
+
+/* Overall summary at top */
+.opt-c .overall-summary {
+  margin: 24px; padding: 24px; background: white;
+  border-radius: 14px; border: 1px solid #e5ded6;
+  box-shadow: 0 2px 12px rgba(61,50,41,0.04);
+}
+.opt-c .summary-row {
+  display: flex; align-items: center; gap: 20px;
+}
+.opt-c .summary-score-circle {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: linear-gradient(135deg, #c4785a, #a65d3f);
+  color: white; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.opt-c .score-big { font-size: 28px; font-weight: 700; }
+.opt-c .summary-text { font-size: 15px; line-height: 1.7; color: #3d3229; }
+
+/* Accordion cards */
+.opt-c .accordion { padding: 0 24px 24px; }
+.opt-c .acc-card {
+  background: white; border-radius: 12px; margin-bottom: 12px;
+  border: 1px solid #e5ded6; overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+.opt-c .acc-card:hover { box-shadow: 0 4px 16px rgba(61,50,41,0.06); }
+.opt-c .acc-header {
+  padding: 16px 20px; display: flex; align-items: center;
+  justify-content: space-between; cursor: pointer;
+  transition: background 0.2s;
+}
+.opt-c .acc-header:hover { background: #faf8f6; }
+.opt-c .acc-title-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.opt-c .acc-icon {
+  width: 36px; height: 36px; border-radius: 10px; display: flex;
+  align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+}
+.opt-c .acc-icon.listening { background: rgba(45,122,105,0.1); }
+.opt-c .acc-icon.validation { background: rgba(196,120,90,0.1); }
+.opt-c .acc-icon.curiosity { background: rgba(123,143,166,0.1); }
+.opt-c .acc-icon.overall { background: rgba(139,115,85,0.1); }
+
+.opt-c .acc-name { font-size: 14px; font-weight: 600; color: #3d3229; }
+.opt-c .acc-score-pill {
+  padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
+}
+.opt-c .acc-score-pill.high { background: #e4f2ed; color: #2d7a69; }
+.opt-c .acc-score-pill.mid { background: #fef3cd; color: #8a6d2b; }
+.opt-c .acc-score-pill.verbal { background: #e6eef6; color: #3a6fa5; }
+
+.opt-c .acc-chevron {
+  font-size: 18px; color: #9a8b7d; transition: transform 0.3s;
+}
+.opt-c .acc-card.open .acc-chevron { transform: rotate(180deg); }
+
+.opt-c .acc-body {
+  display: none; padding: 0 20px 20px; border-top: 1px solid #f0ebe4;
+}
+.opt-c .acc-card.open .acc-body { display: block; }
+.opt-c .acc-feedback {
+  font-size: 14px; line-height: 1.8; color: #4a4a4a; padding-top: 16px;
+}
+
+/* CTA */
+.opt-c .fb-cta {
+  padding: 0 24px 32px;
+}
+.opt-c .cta-btn {
+  display: block; width: 100%; padding: 14px;
+  background: white; border: 2px dashed #c4785a;
+  border-radius: 12px; color: #c4785a; font-family: inherit;
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  text-align: center; transition: all 0.3s;
+}
+.opt-c .cta-btn:hover {
+  background: #c4785a; color: white; border-style: solid;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ringFill {
+  from { stroke-dashoffset: 226; }
+}
+.aura-fade { animation: fadeInUp 0.8s cubic-bezier(0.16,1,0.3,1) forwards; opacity: 0; }
+.aura-fade.d1 { animation-delay: 0.1s; }
+.aura-fade.d2 { animation-delay: 0.25s; }
+.aura-fade.d3 { animation-delay: 0.4s; }
+.aura-fade.d4 { animation-delay: 0.55s; }
+.aura-fade.d5 { animation-delay: 0.7s; }
+
+@media (max-width: 900px) {
+  .option.active { flex-direction: column; align-items: center; }
+  .description-panel { position: static; max-width: 480px; text-align: center; }
+  .preview-frame { width: 100% !important; max-width: 480px; }
+}
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <span class="switcher-label">Feedback Screen:</span>
+  <button class="active" onclick="showOption('a')">A: Score Rings + Moments</button>
+  <button onclick="showOption('b')">B: Structured Report</button>
+  <button onclick="showOption('c')">C: Card Accordion</button>
+</div>
+<div class="viewport-toggle">
+  <button class="active" onclick="setWidth(480)">Desktop (480px)</button>
+  <button onclick="setWidth(375)">Mobile (375px)</button>
+</div>
+
+<div class="options-container">
+
+  <!-- ═══ OPTION A: Score Rings + Golden Moments ═══ -->
+  <div class="option active" id="opt-a">
+    <div class="preview-frame opt-a">
+      <div class="fb-header">
+        <div class="fb-section-label aura-fade">FEEDBACK</div>
+        <div class="fb-title aura-fade d1">סיכום השיחה שלך</div>
+        <div class="fb-subtitle aura-fade d2">שיחה עם נועה · 8 תורות · 6 דקות</div>
+      </div>
+
+      <!-- Score Rings -->
+      <div class="rings-row aura-fade d2">
+        <div class="ring-item">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(26,15,8,0.06)" stroke-width="4"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#2E4031" stroke-width="4"
+              stroke-dasharray="226" stroke-dashoffset="45" stroke-linecap="round"
+              transform="rotate(-90 40 40)" style="animation: ringFill 1.5s ease-out forwards;">
+            </circle>
+            <text x="40" y="44" text-anchor="middle" class="ring-score">8</text>
+          </svg>
+          <div class="ring-label">הקשבה פעילה</div>
+        </div>
+        <div class="ring-item">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(26,15,8,0.06)" stroke-width="4"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#b27958" stroke-width="4"
+              stroke-dasharray="226" stroke-dashoffset="68" stroke-linecap="round"
+              transform="rotate(-90 40 40)">
+            </circle>
+            <text x="40" y="44" text-anchor="middle" class="ring-score">7</text>
+          </svg>
+          <div class="ring-label">תיקוף רגשי</div>
+        </div>
+        <div class="ring-item">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(26,15,8,0.06)" stroke-width="4"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#7b8fa6" stroke-width="4"
+              stroke-dasharray="226" stroke-dashoffset="113" stroke-linecap="round"
+              transform="rotate(-90 40 40)">
+            </circle>
+            <text x="40" y="44" text-anchor="middle" class="ring-score">5</text>
+          </svg>
+          <div class="ring-label">שאלות פתוחות</div>
+        </div>
+        <div class="ring-item">
+          <svg viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="36" fill="none" stroke="rgba(26,15,8,0.06)" stroke-width="4"/>
+            <circle cx="40" cy="40" r="36" fill="none" stroke="#2E4031" stroke-width="4"
+              stroke-dasharray="226" stroke-dashoffset="23" stroke-linecap="round"
+              transform="rotate(-90 40 40)">
+            </circle>
+            <text x="40" y="44" text-anchor="middle" class="ring-score">9</text>
+          </svg>
+          <div class="ring-label">ציון כללי</div>
+        </div>
+      </div>
+
+      <!-- Golden Moments -->
+      <div class="golden-section">
+        <div class="fb-section-label aura-fade d3">GOLDEN MOMENTS</div>
+        <div class="golden-card aura-fade d3">
+          <div class="golden-type effective">רגע אפקטיבי · תור 3</div>
+          <div class="golden-quote">
+            <strong>נועה:</strong> "אף אחד לא מבין אותי בכיתה"<br>
+            <strong>הורה:</strong> "נשמע שזה מרגיש ממש בודד. תרצי לספר לי עוד?"
+          </div>
+          <div class="golden-why">שיקפת את הרגש של נועה ("בודד") ושאלת שאלה פתוחה שמזמינה אותה להמשיך. זה יצר מרחב בטוח.</div>
+        </div>
+        <div class="golden-card aura-fade d4">
+          <div class="golden-type growth">רגע לצמיחה · תור 5</div>
+          <div class="golden-quote">
+            <strong>נועה:</strong> "אני לא רוצה ללכת מחר לבית הספר"<br>
+            <strong>הורה:</strong> "את חייבת ללכת, זה חשוב"
+          </div>
+          <div class="golden-why">התגובה הפכה את השיחה לוויכוח במקום לחקור מה מאחורי הסירוב.</div>
+          <div class="golden-alt">נסו: "מה הכי מדאיג אותך לגבי מחר?"</div>
+        </div>
+      </div>
+
+      <!-- Action Items -->
+      <div class="actions-section">
+        <div class="fb-section-label aura-fade d4">NEXT STEPS</div>
+        <div class="action-item aura-fade d4">
+          <div class="action-icon">🎯</div>
+          <div class="action-text">בפעם הבאה שנועה מביעה התנגדות, נסו לשאול "מה?" לפני "למה?" — שאלות פתוחות קצרות פותחות דלת.</div>
+        </div>
+        <div class="action-item aura-fade d5">
+          <div class="action-icon">💡</div>
+          <div class="action-text">תרגלו "שיקוף + שאלה" — חזרו על מה שאמרה ואז שאלו שאלה פתוחה.</div>
+        </div>
+      </div>
+
+      <!-- Collapsed detail -->
+      <div class="detail-section aura-fade d5">
+        <button class="detail-toggle">📝 פידבק מפורט מד"ר מנטון ◂</button>
+      </div>
+    </div>
+
+    <div class="description-panel">
+      <h3>Option A: Score Rings + Golden Moments</h3>
+      <p>Aura-inspired sand background with grain overlay. SVG radial score rings (sage green, rose-gold). Golden moments as quoted conversation turns with "why" explanations. Collapsed detailed feedback. Section-label typography. Staggered fade-in animations.</p>
+      <span class="tag">Aura-inspired</span>
+      <span class="tag">Premium</span>
+    </div>
+  </div>
+
+  <!-- ═══ OPTION B: Structured Report ═══ -->
+  <div class="option" id="opt-b">
+    <div class="preview-frame opt-b">
+      <div class="fb-header">
+        <h2>סיכום פידבק</h2>
+        <p>שיחה עם נועה · 8 תורות · ד"ר מנטון</p>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="summary-card">
+        <div class="overall-score">
+          <div class="overall-number">7.5</div>
+          <div class="overall-label">ציון ממוצע כולל</div>
+        </div>
+        <div class="bars-grid">
+          <div class="bar-row">
+            <span class="bar-label">הקשבה פעילה</span>
+            <div class="bar-track"><div class="bar-fill high" style="width: 80%"></div></div>
+            <span class="bar-value">8</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">תיקוף רגשי</span>
+            <div class="bar-track"><div class="bar-fill high" style="width: 70%"></div></div>
+            <span class="bar-value">7</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">שאלות פתוחות</span>
+            <div class="bar-track"><div class="bar-fill mid" style="width: 50%"></div></div>
+            <span class="bar-value">5</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-label">סקרנות</span>
+            <div class="bar-track"><div class="bar-fill high" style="width: 90%"></div></div>
+            <span class="bar-value">מצוין</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Strengths (sage) -->
+      <div class="section-strengths">
+        <div class="section-title">💪 חוזקות</div>
+        <div class="section-text">
+          הראית יכולת מצוינת בהקשבה פעילה — חזרת על מה שנועה אמרה בכמה הזדמנויות ונתת לה להרגיש שהיא נשמעת. בתור 3, השיקוף "נשמע שזה מרגיש ממש בודד" היה מדויק ורגיש. גם השאלות הפתוחות שלך היו טובות — "תרצי לספר עוד?" פתח דלת.
+        </div>
+      </div>
+
+      <!-- Improvements (rose-gold) -->
+      <div class="section-improvements">
+        <div class="section-title">🌱 לצמיחה</div>
+        <div class="section-text">
+          כשנועה הביעה התנגדות ("אני לא רוצה ללכת"), התגובה "את חייבת ללכת" סגרה את השיחה. במקום זאת, נסו להישאר סקרניים: "מה הכי מדאיג אותך?" או "מה היה עוזר לך להרגיש יותר מוכנה?"
+        </div>
+      </div>
+
+      <!-- Action Items -->
+      <div class="section-actions">
+        <div class="section-title" style="color: #c4785a;">🎯 לפעם הבאה</div>
+        <div class="action-item-b">
+          <div class="action-num">1</div>
+          <div class="action-text-b">כשהילד/ה מביע/ה התנגדות, שאלו "מה?" לפני שאומרים "למה?"</div>
+        </div>
+        <div class="action-item-b">
+          <div class="action-num">2</div>
+          <div class="action-text-b">תרגלו נוסחת "שיקוף + שאלה פתוחה" — למשל: "שומע שזה קשה. מה הכי מפריע?"</div>
+        </div>
+      </div>
+
+      <button class="new-sim-btn">סימולציה חדשה →</button>
+    </div>
+
+    <div class="description-panel">
+      <h3>Option B: Structured Report</h3>
+      <p>Terracotta gradient header with score summary card. Semantic dual-color sections: sage green border for strengths, rose-gold border for improvements. Numbered action items. Familiar MENTI visual language with elevated structure. Progress bars with color-coded fill levels.</p>
+      <span class="tag">Familiar</span>
+      <span class="tag">Structured</span>
+    </div>
+  </div>
+
+  <!-- ═══ OPTION C: Card Accordion ═══ -->
+  <div class="option" id="opt-c">
+    <div class="preview-frame opt-c">
+      <div class="fb-header">
+        <h2>פידבק מד"ר מנטון</h2>
+        <div class="sim-info">שיחה עם נועה · 8 תורות · 6 דקות</div>
+      </div>
+
+      <!-- Overall Summary -->
+      <div class="overall-summary">
+        <div class="summary-row">
+          <div class="summary-score-circle"><span class="score-big">7.5</span></div>
+          <div class="summary-text">
+            הראית גישה חמה ומתעניינת. הקשבת היטב ונתת לנועה מרחב — אבל יש מקום לצמוח בשאלות פתוחות ובהישארות סקרנית גם מול התנגדות.
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordion Cards -->
+      <div class="accordion">
+        <div class="acc-card open" onclick="this.classList.toggle('open')">
+          <div class="acc-header">
+            <div class="acc-title-row">
+              <div class="acc-icon listening">👂</div>
+              <span class="acc-name">הקשבה פעילה</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="acc-score-pill high">8/10</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+          </div>
+          <div class="acc-body">
+            <div class="acc-feedback">
+              הראית יכולת הקשבה מצוינת. בתור 3 אמרת "נשמע שזה מרגיש ממש בודד" — שיקוף מדויק שנתן לנועה להרגיש שהיא נשמעת. בתור 6 חזרת על מילותיה והוספת שאלה פתוחה. אלה דוגמאות יפות להקשבה פעילה ואפקטיבית.
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-card" onclick="this.classList.toggle('open')">
+          <div class="acc-header">
+            <div class="acc-title-row">
+              <div class="acc-icon validation">❤️</div>
+              <span class="acc-name">תיקוף רגשי</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="acc-score-pill high">7/10</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+          </div>
+          <div class="acc-body">
+            <div class="acc-feedback">
+              תיקפת את רגשות נועה בכמה הזדמנויות, במיוחד כשאמרת "מובן שזה כואב". עם זאת, בתור 5 פספסת הזדמנות לתקף כשענית ישירות "את חייבת ללכת" במקום להכיר ברגש קודם.
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-card" onclick="this.classList.toggle('open')">
+          <div class="acc-header">
+            <div class="acc-title-row">
+              <div class="acc-icon curiosity">🔍</div>
+              <span class="acc-name">שאלות פתוחות</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="acc-score-pill mid">5/10</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+          </div>
+          <div class="acc-body">
+            <div class="acc-feedback">
+              שאלת כמה שאלות פתוחות טובות ("תרצי לספר עוד?") אבל היו גם שאלות סגורות שהגבילו את השיחה. נסו להשתמש יותר ב"מה" ו"איך" במקום "האם" ו"למה".
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-card" onclick="this.classList.toggle('open')">
+          <div class="acc-header">
+            <div class="acc-title-row">
+              <div class="acc-icon overall">⭐</div>
+              <span class="acc-name">סקרנות</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="acc-score-pill verbal">מצוין</span>
+              <span class="acc-chevron">▾</span>
+            </div>
+          </div>
+          <div class="acc-body">
+            <div class="acc-feedback">
+              גילית סקרנות אמיתית כלפי עולמה הפנימי של נועה. המוטיבציה שלך להבין מה עובר עליה הייתה ברורה ויצרה אווירה של אכפתיות. זו יכולת חשובה שכדאי להמשיך לפתח.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fb-cta">
+        <button class="cta-btn">סימולציה חדשה ←</button>
+      </div>
+    </div>
+
+    <div class="description-panel">
+      <h3>Option C: Card Accordion</h3>
+      <p>Clean white cards that expand/collapse per dimension. Overall summary with terracotta score circle at top. Each card shows dimension name, icon, and score pill. Click to expand for full feedback text. Minimal, scannable, mobile-friendly. Dashed CTA button with hover fill.</p>
+      <span class="tag">Scannable</span>
+      <span class="tag">Interactive</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showOption(id) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('active'));
+  document.querySelectorAll('.switcher button').forEach(b => b.classList.remove('active'));
+  document.getElementById('opt-' + id).classList.add('active');
+  document.querySelectorAll('.switcher button').forEach(b => {
+    if (b.textContent.toLowerCase().includes(id + ':')) b.classList.add('active');
+  });
+}
+function setWidth(w) {
+  document.querySelectorAll('.preview-frame').forEach(f => {
+    if (w === 375) f.classList.add('mobile');
+    else f.classList.remove('mobile');
+  });
+  document.querySelectorAll('.viewport-toggle button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

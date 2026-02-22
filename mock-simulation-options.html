@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MENTI Simulation Selection Design Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Hebrew:wght@300;400;500;600;700&family=Figtree:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans Hebrew', 'Rubik', system-ui, sans-serif;
+  background: #f0ebe4;
+  color: #3d3229;
+  line-height: 1.6;
+}
+
+/* ─── SWITCHER ─── */
+.switcher {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(61,50,41,0.95); backdrop-filter: blur(12px);
+  z-index: 100; padding: 12px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  direction: ltr;
+}
+.switcher-label { color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; }
+.switcher button {
+  padding: 8px 20px; border: 1px solid rgba(255,255,255,0.2);
+  background: transparent; color: rgba(255,255,255,0.7);
+  border-radius: 20px; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.3s; font-family: inherit;
+}
+.switcher button.active {
+  background: #c4785a; border-color: #c4785a; color: white;
+  box-shadow: 0 4px 14px rgba(196,120,90,0.4);
+}
+.switcher button:hover:not(.active) { border-color: rgba(255,255,255,0.5); color: white; }
+
+.viewport-toggle {
+  position: fixed; top: 56px; left: 0; right: 0;
+  background: rgba(61,50,41,0.85); backdrop-filter: blur(8px);
+  z-index: 99; padding: 8px 24px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  direction: ltr;
+}
+.viewport-toggle button {
+  padding: 5px 14px; border: 1px solid rgba(255,255,255,0.15);
+  background: transparent; color: rgba(255,255,255,0.6);
+  border-radius: 14px; font-size: 11px; font-weight: 500;
+  cursor: pointer; transition: all 0.25s; font-family: inherit;
+}
+.viewport-toggle button.active { background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.3); }
+
+.mock-container { padding-top: 100px; display: flex; justify-content: center; gap: 40px; padding-bottom: 60px; flex-wrap: wrap; }
+.option { display: none; }
+.option.active { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+
+.mock-frame {
+  background: white; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(61,50,41,0.15);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 480px; flex-shrink: 0;
+}
+
+.desc-card {
+  background: white; border-radius: 16px; padding: 20px 24px;
+  margin-bottom: 20px; max-width: 480px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.desc-card h3 { font-size: 15px; font-weight: 700; color: #3d3229; margin-bottom: 8px; }
+.desc-card p { font-size: 13px; color: #6b5d52; line-height: 1.7; }
+.desc-card .tag {
+  display: inline-block; font-size: 11px; font-weight: 600;
+  padding: 3px 10px; border-radius: 8px; margin-top: 8px; margin-left: 4px;
+}
+.tag-aura { background: #e8d4be; color: #8b6840; }
+.tag-compact { background: #eef2f6; color: #4a5e78; }
+.tag-enhanced { background: #f5ebe6; color: #a65d3f; }
+
+/* ─── OPTION A: AURA MODULE GRID ─── */
+.opt-a {
+  background: #e8d4be;
+  position: relative;
+  padding: 32px 28px 40px;
+  min-height: 700px;
+}
+.opt-a::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; opacity: 0.035; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.opt-a > * { position: relative; z-index: 1; }
+
+.opt-a .section-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 4px; color: rgba(61,50,41,0.4); margin-bottom: 20px;
+}
+.opt-a .page-title {
+  font-size: 26px; font-weight: 300; color: #3d3229; margin-bottom: 8px;
+}
+.opt-a .page-subtitle {
+  font-size: 14px; font-weight: 400; color: rgba(61,50,41,0.5); margin-bottom: 28px;
+}
+
+.module-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+.module-card {
+  border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(26,15,8,0.08);
+  background: rgba(255,255,255,0.2);
+  cursor: pointer; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+.module-card:nth-child(1) { animation-delay: 0ms; }
+.module-card:nth-child(2) { animation-delay: 80ms; }
+.module-card:nth-child(3) { animation-delay: 160ms; }
+.module-card:nth-child(4) { animation-delay: 240ms; }
+.module-card:hover {
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transform: translateY(-2px);
+}
+
+.module-card .card-image {
+  aspect-ratio: 3/4; position: relative; overflow: hidden;
+}
+.module-card .card-image .gradient-bg {
+  width: 100%; height: 100%;
+}
+.module-card .card-image .status-badge {
+  position: absolute; top: 10px; left: 10px;
+  padding: 3px 12px; border-radius: 999px;
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  backdrop-filter: blur(4px); color: white; letter-spacing: 1px;
+}
+.badge-done { background: rgba(139,157,119,0.85); }
+.badge-progress { background: rgba(178,121,88,0.85); }
+.badge-locked {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(232,212,190,0.3);
+}
+.badge-locked svg { width: 40px; height: 40px; stroke: rgba(26,15,8,0.35); fill: none; stroke-width: 1.5; }
+
+.module-card .card-image.locked .gradient-bg { filter: grayscale(1); opacity: 0.5; }
+
+.module-card .card-text {
+  padding: 14px 16px 16px;
+}
+.module-card .card-text .card-num {
+  font-size: 11px; color: rgba(61,50,41,0.35); font-weight: 500; margin-bottom: 4px;
+}
+.module-card .card-text h4 {
+  font-size: 15px; font-weight: 500; color: #3d3229; line-height: 1.4; margin-bottom: 4px;
+  font-family: 'Noto Sans Hebrew', serif;
+}
+.module-card .card-text .card-desc {
+  font-size: 12px; color: rgba(61,50,41,0.5); line-height: 1.5;
+}
+.module-card.locked-card .card-text h4 { color: rgba(61,50,41,0.35); }
+.module-card.locked-card .card-text .card-desc { color: rgba(61,50,41,0.25); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── OPTION B: COMPACT CARD LIST ─── */
+.opt-b {
+  background: #f8f5f1;
+  padding: 32px 24px 40px;
+  min-height: 700px;
+}
+.opt-b .list-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+.opt-b .list-header h2 {
+  font-size: 20px; font-weight: 600; color: #3d3229;
+}
+.opt-b .list-header .filter-pills {
+  display: flex; gap: 6px;
+}
+.opt-b .filter-pill {
+  padding: 5px 14px; border-radius: 999px; font-size: 11px; font-weight: 600;
+  border: 1px solid rgba(61,50,41,0.12); background: transparent;
+  color: rgba(61,50,41,0.5); cursor: pointer; transition: all 0.25s;
+  font-family: inherit;
+}
+.opt-b .filter-pill.active {
+  background: #c4785a; color: white; border-color: #c4785a;
+}
+
+.compact-list { display: flex; flex-direction: column; gap: 10px; }
+
+.compact-card {
+  display: flex; align-items: center; gap: 14px;
+  background: white; border-radius: 14px; padding: 14px 18px;
+  border: 1px solid rgba(61,50,41,0.06);
+  cursor: pointer; transition: all 0.3s ease;
+}
+.compact-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  border-color: rgba(196,120,90,0.2);
+  transform: translateX(4px);
+}
+
+.compact-card .card-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.icon-cbt { background: rgba(139,157,119,0.12); }
+.icon-dbt { background: rgba(178,121,88,0.12); }
+.icon-psycho { background: rgba(123,143,166,0.12); }
+.icon-family { background: rgba(196,120,90,0.12); }
+.icon-group { background: rgba(45,122,105,0.12); }
+
+.compact-card .card-info { flex: 1; min-width: 0; }
+.compact-card .card-info h4 {
+  font-size: 14px; font-weight: 600; color: #3d3229; margin-bottom: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.compact-card .card-info .info-meta {
+  font-size: 12px; color: rgba(61,50,41,0.45);
+}
+
+.compact-card .status-pill {
+  padding: 4px 12px; border-radius: 999px; font-size: 10px; font-weight: 600;
+  flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.5px;
+}
+.pill-available { background: rgba(45,122,105,0.1); color: #2d7a69; }
+.pill-done { background: rgba(139,157,119,0.12); color: #5a6e4e; }
+.pill-locked { background: rgba(61,50,41,0.06); color: rgba(61,50,41,0.3); }
+
+.compact-card .card-arrow {
+  font-size: 16px; color: rgba(61,50,41,0.2); flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.compact-card:hover .card-arrow { transform: translateX(-6px); color: #c4785a; }
+
+/* ─── OPTION C: CURRENT ENHANCED ─── */
+.opt-c {
+  background: #f8f5f1;
+  padding: 32px 24px 40px;
+  min-height: 700px;
+}
+.opt-c .select-wrapper {
+  background: white; border-radius: 16px; padding: 20px;
+  border: 1px solid rgba(61,50,41,0.08);
+  margin-bottom: 16px;
+}
+.opt-c .select-label {
+  font-size: 13px; font-weight: 600; color: rgba(61,50,41,0.5); margin-bottom: 8px;
+}
+.opt-c select {
+  width: 100%; padding: 12px 16px; border-radius: 10px;
+  border: 1px solid rgba(61,50,41,0.12); font-size: 15px; font-weight: 500;
+  font-family: inherit; color: #3d3229; background: #faf8f6;
+  appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c4785a' fill='none' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: 16px center;
+}
+.opt-c select:focus { outline: none; border-color: #c4785a; box-shadow: 0 0 0 3px rgba(196,120,90,0.12); }
+
+.opt-c .preview-card {
+  background: white; border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(61,50,41,0.08);
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.opt-c .preview-hero {
+  height: 120px; position: relative; overflow: hidden;
+}
+.opt-c .preview-hero .hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(transparent 30%, rgba(61,50,41,0.7));
+  display: flex; align-items: flex-end; padding: 16px 20px;
+}
+.opt-c .preview-hero .hero-overlay h3 {
+  font-size: 18px; font-weight: 600; color: white;
+}
+.opt-c .preview-body {
+  padding: 20px;
+}
+.opt-c .preview-body p {
+  font-size: 13px; color: rgba(61,50,41,0.6); line-height: 1.7; margin-bottom: 16px;
+}
+.opt-c .preview-meta {
+  display: flex; gap: 12px; flex-wrap: wrap;
+}
+.opt-c .meta-tag {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 500; color: rgba(61,50,41,0.45);
+  background: rgba(61,50,41,0.04); padding: 5px 12px; border-radius: 8px;
+}
+.opt-c .preview-cta {
+  margin-top: 16px; width: 100%; padding: 14px;
+  background: linear-gradient(135deg, #c4785a, #a65d3f);
+  color: white; border: none; border-radius: 12px;
+  font-size: 15px; font-weight: 600; cursor: pointer;
+  font-family: inherit; transition: all 0.3s;
+}
+.opt-c .preview-cta:hover { box-shadow: 0 6px 20px rgba(196,120,90,0.35); transform: translateY(-1px); }
+
+/* ─── MOBILE WIDTHS ─── */
+.mock-frame.mobile { width: 375px; }
+.mock-frame.mobile .module-grid { grid-template-columns: 1fr; }
+</style>
+</head>
+<body>
+
+<!-- SWITCHER BAR -->
+<div class="switcher">
+  <span class="switcher-label">Simulation Selection:</span>
+  <button class="active" onclick="showOption('a')">A: Aura Module Grid</button>
+  <button onclick="showOption('b')">B: Compact Card List</button>
+  <button onclick="showOption('c')">C: Current Enhanced</button>
+</div>
+
+<div class="viewport-toggle">
+  <button class="active" onclick="setViewport('desktop')">Desktop</button>
+  <button onclick="setViewport('mobile')">Mobile 375px</button>
+</div>
+
+<div class="mock-container">
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- OPTION A: AURA MODULE GRID                      -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="option active" id="option-a">
+  <div>
+    <div class="desc-card">
+      <h3>A: Aura Module Grid</h3>
+      <p>רשת כרטיסים בסגנון Aura — כרטיסי זכוכית עם תמונות, badge סטטוס, אנימציות cascade, ותחושת פלטפורמה טיפולית פרימיום.</p>
+      <span class="tag tag-aura">Aura-Inspired</span>
+      <span class="tag tag-aura">Glass Cards</span>
+    </div>
+    <div class="mock-frame" id="frame-a">
+      <div class="opt-a">
+        <div class="section-label">SIMULATIONS</div>
+        <h2 class="page-title">בחרו סימולציה</h2>
+        <p class="page-subtitle">בחרו תרחיש לתרגול — כל סימולציה מתמקדת במצב טיפולי שונה</p>
+
+        <div class="module-grid">
+          <!-- Card 1: Available -->
+          <div class="module-card">
+            <div class="card-image">
+              <div class="gradient-bg" style="background: linear-gradient(135deg, #e8d4be 0%, #d4a373 40%, #b27958 100%); width:100%; height:100%;"></div>
+              <span class="status-badge badge-progress">IN PROGRESS</span>
+            </div>
+            <div class="card-text">
+              <div class="card-num">01</div>
+              <h4>שרה — מורה בת 38</h4>
+              <div class="card-desc">דיכאון מז'ורי, CBT — טיפול קוגניטיבי התנהגותי</div>
+            </div>
+          </div>
+
+          <!-- Card 2: Done -->
+          <div class="module-card">
+            <div class="card-image">
+              <div class="gradient-bg" style="background: linear-gradient(135deg, #8b9a8e 0%, #5a6e4e 40%, #2E4031 100%); width:100%; height:100%;"></div>
+              <span class="status-badge badge-done">DONE</span>
+            </div>
+            <div class="card-text">
+              <div class="card-num">02</div>
+              <h4>מנחם — פרופסור בן 75</h4>
+              <div class="card-desc">אבל מורכב — טיפול פסיכודינמי</div>
+            </div>
+          </div>
+
+          <!-- Card 3: Available -->
+          <div class="module-card">
+            <div class="card-image">
+              <div class="gradient-bg" style="background: linear-gradient(135deg, #c4a882 0%, #a68b6b 40%, #7b6850 100%); width:100%; height:100%;"></div>
+            </div>
+            <div class="card-text">
+              <div class="card-num">03</div>
+              <h4>מיכל — אם חד-הורית</h4>
+              <div class="card-desc">ילד עם בעיות התנהגות — טיפול משפחתי</div>
+            </div>
+          </div>
+
+          <!-- Card 4: Locked -->
+          <div class="module-card locked-card">
+            <div class="card-image locked">
+              <div class="gradient-bg" style="background: linear-gradient(135deg, #bbb 0%, #999 40%, #777 100%); width:100%; height:100%;"></div>
+              <div class="badge-locked">
+                <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </div>
+            </div>
+            <div class="card-text">
+              <div class="card-num">04</div>
+              <h4>יעל — ניצולת התעללות</h4>
+              <div class="card-desc">נעול: השלימו סימולציה 03</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- OPTION B: COMPACT CARD LIST                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="option" id="option-b">
+  <div>
+    <div class="desc-card">
+      <h3>B: Compact Card List</h3>
+      <p>רשימת כרטיסים אופקיים קומפקטיים — אייקון, כותרת, תיאור ו-pill סטטוס. יעיל ותכליתי, מאפשר סריקה מהירה.</p>
+      <span class="tag tag-compact">Compact</span>
+      <span class="tag tag-compact">Efficient</span>
+    </div>
+    <div class="mock-frame" id="frame-b">
+      <div class="opt-b">
+        <div class="list-header">
+          <h2>בחרו סימולציה</h2>
+          <div class="filter-pills">
+            <button class="filter-pill active">הכל</button>
+            <button class="filter-pill">CBT</button>
+            <button class="filter-pill">DBT</button>
+            <button class="filter-pill">זוגי</button>
+          </div>
+        </div>
+
+        <div class="compact-list">
+          <div class="compact-card">
+            <div class="card-icon icon-cbt">🧠</div>
+            <div class="card-info">
+              <h4>שרה — מורה בת 38 עם דיכאון מז'ורי</h4>
+              <div class="info-meta">CBT — טיפול קוגניטיבי התנהגותי</div>
+            </div>
+            <span class="status-pill pill-available">זמין</span>
+            <span class="card-arrow">←</span>
+          </div>
+
+          <div class="compact-card">
+            <div class="card-icon icon-psycho">💭</div>
+            <div class="card-info">
+              <h4>מנחם — פרופסור בן 75 עם אבל מורכב</h4>
+              <div class="info-meta">פסיכודינמי</div>
+            </div>
+            <span class="status-pill pill-done">הושלם</span>
+            <span class="card-arrow">←</span>
+          </div>
+
+          <div class="compact-card">
+            <div class="card-icon icon-family">👨‍👩‍👧</div>
+            <div class="card-info">
+              <h4>מיכל — אם חד-הורית לילד עם בעיות התנהגות</h4>
+              <div class="info-meta">טיפול משפחתי</div>
+            </div>
+            <span class="status-pill pill-available">זמין</span>
+            <span class="card-arrow">←</span>
+          </div>
+
+          <div class="compact-card">
+            <div class="card-icon icon-dbt">🌊</div>
+            <div class="card-info">
+              <h4>שירה — נערה בת 16 עם פגיעה עצמית</h4>
+              <div class="info-meta">DBT — טיפול דיאלקטי התנהגותי</div>
+            </div>
+            <span class="status-pill pill-available">זמין</span>
+            <span class="card-arrow">←</span>
+          </div>
+
+          <div class="compact-card" style="opacity:0.5; pointer-events:none;">
+            <div class="card-icon icon-group">👥</div>
+            <div class="card-info">
+              <h4>אלון — טיפול קבוצתי CBT לחרדה חברתית</h4>
+              <div class="info-meta">קבוצתי — נעול</div>
+            </div>
+            <span class="status-pill pill-locked">נעול</span>
+            <span class="card-arrow">←</span>
+          </div>
+
+          <div class="compact-card">
+            <div class="card-icon icon-psycho">💑</div>
+            <div class="card-info">
+              <h4>דן וליאט — טיפול זוגי EFT לאחר בגידה רגשית</h4>
+              <div class="info-meta">EFT — טיפול ממוקד רגש</div>
+            </div>
+            <span class="status-pill pill-available">זמין</span>
+            <span class="card-arrow">←</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- OPTION C: CURRENT ENHANCED                      -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="option" id="option-c">
+  <div>
+    <div class="desc-card">
+      <h3>C: Current Enhanced</h3>
+      <p>שיפור הדרופדאון הנוכחי — הוספת כרטיס תצוגה מקדימה עם תיאור, מטא-דאטה ותמונה כשבוחרים סימולציה. שינוי מינימלי, סיכון נמוך.</p>
+      <span class="tag tag-enhanced">Low Risk</span>
+      <span class="tag tag-enhanced">Minimal Change</span>
+    </div>
+    <div class="mock-frame" id="frame-c">
+      <div class="opt-c">
+        <div class="select-wrapper">
+          <div class="select-label">בחרו סימולציה לתרגול</div>
+          <select>
+            <option>שרה — מורה בת 38 עם דיכאון מז'ורי</option>
+            <option>מנחם — פרופסור לפילוסופיה בן 75 עם אבל מורכב</option>
+            <option>מיכל — אם חד-הורית לילד עם בעיות התנהגות</option>
+            <option>שירה — נערה בת 16 עם פגיעה עצמית, טיפול DBT</option>
+            <option>דן וליאט — טיפול זוגי EFT לאחר בגידה רגשית</option>
+          </select>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-hero">
+            <div style="width:100%; height:100%; background: linear-gradient(135deg, #e8d4be 0%, #d4a373 40%, #b27958 100%);"></div>
+            <div class="hero-overlay">
+              <h3>שרה — מורה בת 38</h3>
+            </div>
+          </div>
+          <div class="preview-body">
+            <p>שרה היא מורה למתמטיקה בת 38, אם לשני ילדים, שמתמודדת עם דיכאון מז'ורי. היא מגיעה לטיפול אחרי חודשיים של ירידה בתפקוד, נדודי שינה, ואובדן עניין.</p>
+            <div class="preview-meta">
+              <span class="meta-tag">🧠 CBT</span>
+              <span class="meta-tag">📝 15 תורות</span>
+              <span class="meta-tag">⏱️ 20-30 דק׳</span>
+              <span class="meta-tag">📊 4 ממדי הערכה</span>
+            </div>
+            <button class="preview-cta">התחל סימולציה ←</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /mock-container -->
+
+<script>
+function showOption(id) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('active'));
+  document.getElementById('option-' + id).classList.add('active');
+  document.querySelectorAll('.switcher button').forEach((b, i) => {
+    b.classList.toggle('active', i === ['a','b','c'].indexOf(id));
+  });
+}
+
+function setViewport(mode) {
+  const frames = document.querySelectorAll('.mock-frame');
+  frames.forEach(f => {
+    if (mode === 'mobile') { f.classList.add('mobile'); f.style.width = '375px'; }
+    else { f.classList.remove('mobile'); f.style.width = '480px'; }
+  });
+  document.querySelectorAll('.viewport-toggle button').forEach((b, i) => {
+    b.classList.toggle('active', i === (mode === 'desktop' ? 0 : 1));
+  });
+}
+</script>
+</body>
+</html>
