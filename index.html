@@ -40,12 +40,8 @@ body {
   text-align: center;
   position: sticky; top: 0; z-index: 100;
 }
-.site-header h1 {
-  font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px;
-}
-.site-header p {
-  font-size: 13px; color: rgba(255,255,255,0.5);
-}
+.site-header h1 { font-size: 22px; font-weight: 700; color: white; margin-bottom: 4px; }
+.site-header p { font-size: 13px; color: rgba(255,255,255,0.5); }
 
 /* ─── VOTER SELECTOR ─── */
 .voter-bar {
@@ -55,9 +51,7 @@ body {
   display: flex; align-items: center; justify-content: center; gap: 12px;
   position: sticky; top: 72px; z-index: 99;
 }
-.voter-bar .label {
-  font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500;
-}
+.voter-bar .label { font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 500; }
 .voter-btn {
   display: flex; align-items: center; gap: 8px;
   padding: 8px 20px; border-radius: 999px;
@@ -74,11 +68,7 @@ body {
 .voter-btn[data-voter="elad"] .avatar { background: var(--elad-color); }
 .voter-btn[data-voter="zohar"] .avatar { background: var(--zohar-color); }
 .voter-btn[data-voter="keren"] .avatar { background: var(--keren-color); }
-
-.voter-btn.active {
-  border-color: white; color: white;
-  background: rgba(255,255,255,0.1);
-}
+.voter-btn.active { border-color: white; color: white; background: rgba(255,255,255,0.1); }
 .voter-btn:hover:not(.active) { border-color: rgba(255,255,255,0.4); }
 
 /* ─── NAV ─── */
@@ -102,78 +92,90 @@ body {
 .content { max-width: 1200px; margin: 0 auto; padding: 24px; }
 
 /* ─── SECTION ─── */
-.vote-section {
-  margin-bottom: 48px;
-  scroll-margin-top: 180px;
-}
+.vote-section { margin-bottom: 56px; scroll-margin-top: 180px; }
 .section-header {
   display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 20px; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 16px; flex-wrap: wrap; gap: 8px;
 }
-.section-header h2 {
-  font-size: 22px; font-weight: 700; color: var(--text);
-}
-.section-header .mockup-link {
-  font-size: 13px; color: var(--accent); text-decoration: none;
-  font-weight: 600; padding: 6px 14px; border-radius: 10px;
-  background: rgba(196,120,90,0.08);
-  transition: all 0.25s;
-}
-.section-header .mockup-link:hover { background: rgba(196,120,90,0.15); }
+.section-header h2 { font-size: 22px; font-weight: 700; }
 
-/* ─── OPTIONS ROW ─── */
-.options-row {
-  display: grid;
-  gap: 20px;
+/* ─── OPTION TABS ─── */
+.option-tabs {
+  display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
 }
-.options-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.options-row.cols-2 { grid-template-columns: repeat(2, 1fr); }
-
-@media (max-width: 900px) {
-  .options-row.cols-3 { grid-template-columns: 1fr; }
-  .options-row.cols-2 { grid-template-columns: 1fr; }
+.option-tab {
+  flex: 1; min-width: 140px;
+  padding: 12px 16px; border-radius: 14px;
+  border: 2px solid var(--border); background: var(--card);
+  cursor: pointer; font-family: inherit; font-size: 13px;
+  font-weight: 600; color: var(--text);
+  transition: all 0.3s;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
+.option-tab:hover { border-color: rgba(196,120,90,0.3); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.option-tab.active {
+  border-color: var(--accent);
+  background: rgba(196,120,90,0.04);
+  box-shadow: 0 2px 12px rgba(196,120,90,0.1);
+}
+.option-tab.voted-tab {
+  border-color: var(--accent); background: var(--accent); color: white;
+}
+.option-tab.voted-tab .voter-dot-sm { border-color: rgba(255,255,255,0.3); }
 
-/* ─── OPTION CARD ─── */
-.option-card {
+.tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab-dots { display: flex; gap: 3px; flex-shrink: 0; }
+
+.voter-dot-sm {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: white;
+  opacity: 0.15; transition: opacity 0.3s;
+}
+.voter-dot-sm.active { opacity: 1; }
+.voter-dot-sm[data-v="elad"] { background: var(--elad-color); }
+.voter-dot-sm[data-v="zohar"] { background: var(--zohar-color); }
+.voter-dot-sm[data-v="keren"] { background: var(--keren-color); }
+
+/* ─── PREVIEW CONTAINER ─── */
+.preview-container {
   background: var(--card); border-radius: 16px; overflow: hidden;
   border: 2px solid var(--border);
-  transition: all 0.3s ease;
-  cursor: pointer;
+  transition: all 0.3s;
 }
-.option-card:hover { border-color: rgba(196,120,90,0.25); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
-.option-card.selected { border-color: var(--accent); box-shadow: 0 8px 30px rgba(196,120,90,0.2); }
+.preview-container.selected { border-color: var(--accent); box-shadow: 0 8px 30px rgba(196,120,90,0.15); }
 
-.option-card .iframe-wrap {
-  width: 100%; height: 400px; overflow: hidden; position: relative;
+.preview-iframe-wrap {
+  width: 100%;
+  height: clamp(400px, 60vh, 700px);
+  overflow: hidden; position: relative;
   background: #f8f5f1;
 }
-.option-card .iframe-wrap iframe {
-  width: 200%; height: 200%;
-  transform: scale(0.5); transform-origin: top right;
+.preview-iframe-wrap iframe {
+  width: 125%; height: 125%;
+  transform: scale(0.8); transform-origin: top right;
   border: none; pointer-events: none;
 }
-.option-card .iframe-wrap .iframe-overlay {
-  position: absolute; inset: 0; z-index: 1;
+.preview-iframe-wrap .iframe-overlay {
+  position: absolute; inset: 0; z-index: 1; cursor: pointer;
 }
 
-.option-card .card-body {
-  padding: 16px 20px;
+.preview-info {
+  padding: 20px 24px; border-top: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap;
 }
-.option-card .card-body h3 {
-  font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px;
-}
-.option-card .card-body p {
-  font-size: 13px; color: var(--text-light); line-height: 1.6; margin-bottom: 12px;
-}
+.preview-info-text { flex: 1; min-width: 200px; }
+.preview-info-text h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.preview-info-text p { font-size: 13px; color: var(--text-light); line-height: 1.7; }
 
-.vote-row {
-  display: flex; align-items: center; justify-content: space-between;
+.preview-actions {
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
 .vote-btn {
-  padding: 8px 20px; border-radius: 10px;
-  font-size: 13px; font-weight: 600; cursor: pointer;
+  padding: 10px 24px; border-radius: 12px;
+  font-size: 14px; font-weight: 600; cursor: pointer;
   border: 2px solid var(--border); background: transparent;
   color: var(--text-light); transition: all 0.25s; font-family: inherit;
 }
@@ -182,44 +184,60 @@ body {
   background: var(--accent); border-color: var(--accent); color: white;
 }
 
-.voter-dots {
-  display: flex; gap: 6px; align-items: center;
+.fullsize-link {
+  font-size: 13px; color: var(--accent); text-decoration: none;
+  font-weight: 600; padding: 10px 16px; border-radius: 12px;
+  background: rgba(196,120,90,0.06); transition: all 0.25s;
+  white-space: nowrap;
 }
-.voter-dot {
-  width: 28px; height: 28px; border-radius: 50%;
+.fullsize-link:hover { background: rgba(196,120,90,0.12); }
+
+/* ─── FULLSCREEN MODAL ─── */
+.fullscreen-modal {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(61,50,41,0.92); backdrop-filter: blur(8px);
+  padding: 20px;
+  flex-direction: column; align-items: center; justify-content: center;
+}
+.fullscreen-modal.show { display: flex; }
+.fullscreen-modal .modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; max-width: 1400px; margin-bottom: 12px;
+}
+.fullscreen-modal .modal-title {
+  font-size: 16px; font-weight: 600; color: white;
+}
+.close-modal {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.1); border: none;
+  color: white; font-size: 20px; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; color: white;
-  opacity: 0.3; transition: opacity 0.3s;
+  transition: background 0.2s;
 }
-.voter-dot.active { opacity: 1; }
-.voter-dot[data-v="elad"] { background: var(--elad-color); }
-.voter-dot[data-v="zohar"] { background: var(--zohar-color); }
-.voter-dot[data-v="keren"] { background: var(--keren-color); }
+.close-modal:hover { background: rgba(255,255,255,0.2); }
+.fullscreen-modal iframe {
+  width: 100%; max-width: 1400px;
+  height: calc(100vh - 100px);
+  border: none; border-radius: 12px; background: white;
+}
 
 /* ─── RESULTS TABLE ─── */
 .results-section {
   background: var(--card); border-radius: 16px; padding: 24px;
   border: 1px solid var(--border); margin-bottom: 48px;
 }
-.results-section h2 {
-  font-size: 20px; font-weight: 700; margin-bottom: 16px;
-}
-.results-table {
-  width: 100%; border-collapse: collapse;
-  font-size: 14px;
-}
+.results-section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+.results-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .results-table th {
   text-align: right; padding: 10px 12px;
   background: rgba(61,50,41,0.04); font-weight: 600;
   border-bottom: 2px solid var(--border);
 }
-.results-table td {
-  padding: 10px 12px; border-bottom: 1px solid var(--border);
-}
+.results-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
 .results-table .match { color: var(--success); font-weight: 600; }
 .results-table .pending { color: var(--text-light); font-style: italic; }
 
-/* ─── NO VOTER WARNING ─── */
+/* ─── NO VOTER OVERLAY ─── */
 .no-voter-overlay {
   display: none;
   position: fixed; inset: 0; z-index: 200;
@@ -243,8 +261,16 @@ body {
   display: flex; align-items: center; justify-content: space-between;
   font-size: 13px; color: var(--success); font-weight: 600;
 }
-.status-bar .progress {
-  font-size: 12px; font-weight: 400; color: var(--text-light);
+.status-bar .progress { font-size: 12px; font-weight: 400; color: var(--text-light); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .option-tabs { gap: 6px; }
+  .option-tab { min-width: 100px; padding: 10px 12px; font-size: 12px; }
+  .preview-info { flex-direction: column; gap: 12px; padding: 16px; }
+  .preview-actions { width: 100%; justify-content: space-between; }
+  .voter-bar { flex-wrap: wrap; gap: 8px; }
+  .section-nav { gap: 4px; }
 }
 </style>
 </head>
@@ -276,7 +302,6 @@ body {
     <span class="progress" id="status-progress"></span>
   </div>
 
-  <!-- Sections will be rendered by JS -->
   <div id="sections-container"></div>
 
   <div class="results-section" id="results-section">
@@ -315,12 +340,21 @@ body {
   </div>
 </div>
 
+<!-- Fullscreen modal -->
+<div class="fullscreen-modal" id="fullscreen-modal">
+  <div class="modal-header">
+    <span class="modal-title" id="modal-title"></span>
+    <button class="close-modal" onclick="closeFullscreen()">&times;</button>
+  </div>
+  <iframe id="fullscreen-iframe" sandbox="allow-scripts"></iframe>
+</div>
+
 <script>
 const API_URL = 'https://menti-api-333637302786.me-west1.run.app/api/votes';
-const MOCKUP_BASE = ''; // same directory
 
 let currentVoter = localStorage.getItem('menti_design_voter') || null;
 let allVotes = {};
+let activeTabs = {};
 
 // ─── SECTION DEFINITIONS ───
 const SECTIONS = [
@@ -329,9 +363,9 @@ const SECTIONS = [
     title: 'מסך פתיחה',
     mockupFile: 'mock-welcome-options.html',
     options: [
-      { key: 'A', title: 'A: Aura Minimal', desc: 'רקע חולי, grain overlay, כרטיס זכוכית, טיפוגרפיה קלה (300 weight), section labels — תחושת פלטפורמה טיפולית פרימיום', hashParam: '?opt=A&embed=1' },
-      { key: 'B', title: 'B: Headspace Warm', desc: 'גרדיאנט hero בולט עם אנימציה, badge "סביבה בטוחה", כרטיס הוראות — חם ומוכר, מבנה MENTI קיים', hashParam: '?opt=B&embed=1' },
-      { key: 'C', title: 'C: Hybrid', desc: 'Hero קומפקטי, כרטיס whisper להוראות, בחירת מגדר בסגנון זכוכית, שלבים 1→2→3 — שילוב הטוב משניהם', hashParam: '?opt=C&embed=1' },
+      { key: 'A', title: 'A: Aura Minimal', desc: 'רקע חולי, grain overlay, כרטיס זכוכית, טיפוגרפיה קלה (300 weight), section labels — תחושת פלטפורמה טיפולית פרימיום' },
+      { key: 'B', title: 'B: Headspace Warm', desc: 'גרדיאנט hero בולט עם אנימציה, badge "סביבה בטוחה", כרטיס הוראות — חם ומוכר, מבנה MENTI קיים' },
+      { key: 'C', title: 'C: Hybrid', desc: 'Hero קומפקטי, כרטיס whisper להוראות, בחירת מגדר בסגנון זכוכית, שלבים 1-2-3 — שילוב הטוב משניהם' },
     ]
   },
   {
@@ -339,9 +373,9 @@ const SECTIONS = [
     title: 'מסך שיחה',
     mockupFile: 'mock-chat-options.html',
     options: [
-      { key: 'A', title: 'A: Aura Whisper', desc: 'רקע חולי + grain, טקסט בוט קל (300 weight, 20px), בועות זכוכית, מנטור ככרטיס whisper צף — פרימיום', hashParam: '?opt=A&embed=1' },
-      { key: 'B', title: 'B: Immersive Minimal', desc: 'אווטאר עגול, כרטיסי הודעות לבנים, בועות גרדיאנט למשתמש, מנטור ככרטיס עם badge, input pill — מודרני', hashParam: '?opt=B&embed=1' },
-      { key: 'C', title: 'C: Current Enhanced', desc: 'עיצוב MENTI הנוכחי משופר — אותו border-right, אותו layout, ריווח טוב יותר, צללים עדינים — שינוי מינימלי', hashParam: '?opt=C&embed=1' },
+      { key: 'A', title: 'A: Aura Whisper', desc: 'רקע חולי + grain, טקסט בוט קל (300 weight, 20px), בועות זכוכית, מנטור ככרטיס whisper צף — פרימיום' },
+      { key: 'B', title: 'B: Immersive Minimal', desc: 'אווטאר עגול, כרטיסי הודעות לבנים, בועות גרדיאנט למשתמש, מנטור ככרטיס עם badge, input pill — מודרני' },
+      { key: 'C', title: 'C: Current Enhanced', desc: 'עיצוב MENTI הנוכחי משופר — אותו border-right, אותו layout, ריווח טוב יותר, צללים עדינים — שינוי מינימלי' },
     ]
   },
   {
@@ -349,9 +383,9 @@ const SECTIONS = [
     title: 'מסך פידבק',
     mockupFile: 'mock-feedback-options.html',
     options: [
-      { key: 'A', title: 'A: Score Rings + Golden Moments', desc: 'טבעות SVG רדיאליות (sage/rose-gold), ציטוטי שיחה עם הסברי "למה", אנימציות stagger, grain — פרימיום', hashParam: '?opt=A&embed=1' },
-      { key: 'B', title: 'B: Structured Report', desc: 'header גרדיאנט, כרטיס סיכום ציונים, סעיפים דו-צבעיים (sage לחוזקות, rose-gold לשיפורים), פעולות ממוספרות', hashParam: '?opt=B&embed=1' },
-      { key: 'C', title: 'C: Card Accordion', desc: 'כרטיסים לבנים מתרחבים לכל ממד, סיכום עם עיגול ציון, pills לציונים, לחיצה לפתיחה — סריקה מהירה', hashParam: '?opt=C&embed=1' },
+      { key: 'A', title: 'A: Score Rings', desc: 'טבעות SVG רדיאליות (sage/rose-gold), ציטוטי שיחה עם הסברי "למה", אנימציות stagger, grain — פרימיום' },
+      { key: 'B', title: 'B: Structured Report', desc: 'header גרדיאנט, כרטיס סיכום ציונים, סעיפים דו-צבעיים (sage לחוזקות, rose-gold לשיפורים), פעולות ממוספרות' },
+      { key: 'C', title: 'C: Card Accordion', desc: 'כרטיסים לבנים מתרחבים לכל ממד, סיכום עם עיגול ציון, pills לציונים, לחיצה לפתיחה — סריקה מהירה' },
     ]
   },
   {
@@ -359,9 +393,9 @@ const SECTIONS = [
     title: 'בחירת סימולציה',
     mockupFile: 'mock-simulation-options.html',
     options: [
-      { key: 'A', title: 'A: Aura Module Grid', desc: 'רשת כרטיסים עם תמונות ב-3:4, badge סטטוס (DONE/IN PROGRESS), מנעול לסימולציות נעולות, אנימציות cascade — פרימיום', hashParam: '?opt=A&embed=1' },
-      { key: 'B', title: 'B: Compact Card List', desc: 'רשימה אופקית — אייקון + כותרת + תיאור + pill סטטוס + חץ, סינון לפי סוג טיפול — יעיל ותכליתי', hashParam: '?opt=B&embed=1' },
-      { key: 'C', title: 'C: Current Enhanced', desc: 'דרופדאון משופר + כרטיס תצוגה מקדימה עם תמונה, תיאור ומטא-דאטה — שינוי מינימלי, סיכון נמוך', hashParam: '?opt=C&embed=1' },
+      { key: 'A', title: 'A: Module Grid', desc: 'רשת כרטיסים עם תמונות ב-3:4, badge סטטוס (DONE/IN PROGRESS), מנעול לסימולציות נעולות, אנימציות cascade — פרימיום' },
+      { key: 'B', title: 'B: Compact List', desc: 'רשימה אופקית — אייקון + כותרת + תיאור + pill סטטוס + חץ, סינון לפי סוג טיפול — יעיל ותכליתי' },
+      { key: 'C', title: 'C: Current Enhanced', desc: 'דרופדאון משופר + כרטיס תצוגה מקדימה עם תמונה, תיאור ומטא-דאטה — שינוי מינימלי, סיכון נמוך' },
     ]
   },
   {
@@ -369,8 +403,8 @@ const SECTIONS = [
     title: 'שפת עיצוב (Design Tokens)',
     mockupFile: 'mock-components.html',
     options: [
-      { key: 'current', title: 'Nature Distilled (נוכחי)', desc: 'הפלטה הנוכחית — כבד (700 weight), צללים חמים, 4 רמות צל, גבולות 6-20px, easing קיים — עובד היום', hashParam: '?embed=1' },
-      { key: 'proposed', title: 'Aura-Inspired (מוצע)', desc: 'תוספת sand/sage/rose-gold, טיפוגרפיה קלה (300 weight), צללים דקיקים, grain overlay, section labels, easing חדש — שדרוג משמעותי', hashParam: '?embed=1' },
+      { key: 'current', title: 'Nature Distilled (נוכחי)', desc: 'הפלטה הנוכחית — כבד (700 weight), צללים חמים, 4 רמות צל, גבולות 6-20px, easing קיים — עובד היום' },
+      { key: 'proposed', title: 'Aura-Inspired (מוצע)', desc: 'תוספת sand/sage/rose-gold, טיפוגרפיה קלה (300 weight), צללים דקיקים, grain overlay, section labels, easing חדש — שדרוג משמעותי' },
     ]
   },
   {
@@ -378,8 +412,8 @@ const SECTIONS = [
     title: 'כיוון מובייל',
     mockupFile: 'mock-mobile-options.html',
     options: [
-      { key: 'refined', title: 'שיפור הנוכחי', desc: 'שמירה על המבנה הקיים עם שיפורי ריווח, touch targets, ו-safe areas — שינוי מינימלי, תוצאה מיידית', hashParam: '?embed=1' },
-      { key: 'redesign', title: 'עיצוב מחדש (Aura)', desc: 'רקע חולי, grain, whisper cards למנטור, טבעות ציון, glass forms — חוויה פרימיום אחידה בדסקטופ ומובייל', hashParam: '?embed=1' },
+      { key: 'refined', title: 'שיפור הנוכחי', desc: 'שמירה על המבנה הקיים עם שיפורי ריווח, touch targets, ו-safe areas — שינוי מינימלי, תוצאה מיידית' },
+      { key: 'redesign', title: 'עיצוב מחדש (Aura)', desc: 'רקע חולי, grain, whisper cards למנטור, טבעות ציון, glass forms — חוויה פרימיום אחידה בדסקטופ ומובייל' },
     ]
   }
 ];
@@ -392,50 +426,126 @@ function renderSections() {
   let navHtml = '';
 
   SECTIONS.forEach(section => {
-    const colClass = section.options.length <= 2 ? 'cols-2' : 'cols-3';
-    navHtml += `<a href="#section-${section.id}" class="nav-link" id="nav-${section.id}"><span class="check" id="check-${section.id}"></span>${section.title}</a>`;
+    if (!activeTabs[section.id]) activeTabs[section.id] = section.options[0].key;
+    const activeOpt = section.options.find(o => o.key === activeTabs[section.id]) || section.options[0];
 
-    html += `<div class="vote-section" id="section-${section.id}">`;
-    html += `<div class="section-header">`;
-    html += `<h2>${section.title}</h2>`;
-    if (section.mockupFile) {
-      html += `<a href="${MOCKUP_BASE}${section.mockupFile}" target="_blank" class="mockup-link">צפה במוקאפ המלא &larr;</a>`;
-    }
-    html += `</div>`;
+    navHtml += '<a href="#section-' + section.id + '" class="nav-link" id="nav-' + section.id + '">' +
+      '<span class="check" id="check-' + section.id + '"></span>' + section.title + '</a>';
 
-    html += `<div class="options-row ${colClass}">`;
-    section.options.forEach(opt => {
-      html += `<div class="option-card" id="card-${section.id}-${opt.key}" onclick="vote('${section.id}','${opt.key}')">`;
+    html += '<div class="vote-section" id="section-' + section.id + '">';
+    html += '<div class="section-header"><h2>' + section.title + '</h2></div>';
 
-      // Iframe preview
-      if (section.mockupFile) {
-        html += `<div class="iframe-wrap">`;
-        html += `<iframe src="${MOCKUP_BASE}${section.mockupFile}${opt.hashParam || ''}" loading="lazy" sandbox="allow-scripts"></iframe>`;
-        html += `<div class="iframe-overlay" title="לחצו להצביע"></div>`;
-        html += `</div>`;
-      }
-
-      html += `<div class="card-body">`;
-      html += `<h3>${opt.title}</h3>`;
-      html += `<p>${opt.desc}</p>`;
-      html += `<div class="vote-row">`;
-      html += `<button class="vote-btn" id="btn-${section.id}-${opt.key}" onclick="event.stopPropagation(); vote('${section.id}','${opt.key}')">הצבע</button>`;
-      html += `<div class="voter-dots">`;
-      html += `<div class="voter-dot" data-v="elad" id="dot-${section.id}-${opt.key}-elad">א</div>`;
-      html += `<div class="voter-dot" data-v="zohar" id="dot-${section.id}-${opt.key}-zohar">ז</div>`;
-      html += `<div class="voter-dot" data-v="keren" id="dot-${section.id}-${opt.key}-keren">ק</div>`;
-      html += `</div>`;
-      html += `</div>`;
-      html += `</div>`;
-      html += `</div>`;
+    // Option tabs
+    html += '<div class="option-tabs">';
+    section.options.forEach(function(opt) {
+      var isActive = opt.key === activeTabs[section.id];
+      html += '<button class="option-tab' + (isActive ? ' active' : '') + '" ' +
+        'id="tab-' + section.id + '-' + opt.key + '" ' +
+        'onclick="switchTab(\'' + section.id + '\',\'' + opt.key + '\')">';
+      html += '<span class="tab-label">' + opt.title + '</span>';
+      html += '<span class="tab-dots">';
+      html += '<span class="voter-dot-sm" data-v="elad" id="tdot-' + section.id + '-' + opt.key + '-elad">\u05D0</span>';
+      html += '<span class="voter-dot-sm" data-v="zohar" id="tdot-' + section.id + '-' + opt.key + '-zohar">\u05D6</span>';
+      html += '<span class="voter-dot-sm" data-v="keren" id="tdot-' + section.id + '-' + opt.key + '-keren">\u05E7</span>';
+      html += '</span>';
+      html += '</button>';
     });
-    html += `</div>`;
-    html += `</div>`;
+    html += '</div>';
+
+    // Preview container
+    var iframeSrc = section.mockupFile + '?opt=' + activeOpt.key + '&embed=1';
+    html += '<div class="preview-container" id="preview-' + section.id + '">';
+    html += '<div class="preview-iframe-wrap">';
+    html += '<iframe id="iframe-' + section.id + '" src="' + iframeSrc + '" loading="lazy" sandbox="allow-scripts"></iframe>';
+    html += '<div class="iframe-overlay" onclick="voteCurrentTab(\'' + section.id + '\')"></div>';
+    html += '</div>';
+
+    // Info bar
+    html += '<div class="preview-info">';
+    html += '<div class="preview-info-text">';
+    html += '<h3 id="ptitle-' + section.id + '">' + activeOpt.title + '</h3>';
+    html += '<p id="pdesc-' + section.id + '">' + activeOpt.desc + '</p>';
+    html += '</div>';
+    html += '<div class="preview-actions">';
+    html += '<button class="vote-btn" id="pvote-' + section.id + '" onclick="voteCurrentTab(\'' + section.id + '\')">\u05D4\u05E6\u05D1\u05E2</button>';
+    html += '<a class="fullsize-link" id="pfull-' + section.id + '" href="' + section.mockupFile + '?opt=' + activeOpt.key + '&embed=1" onclick="event.preventDefault(); openFullscreen(\'' + section.id + '\')">\u05E6\u05E4\u05D4 \u05D1\u05D2\u05D5\u05D3\u05DC \u05DE\u05DC\u05D0 \u2190</a>';
+    html += '</div>';
+    html += '</div>';
+    html += '</div>'; // preview-container
+
+    html += '</div>'; // vote-section
   });
 
   container.innerHTML = html;
   nav.innerHTML = navHtml;
 }
+
+// ─── SWITCH TAB ───
+function switchTab(sectionId, optKey) {
+  activeTabs[sectionId] = optKey;
+  var section = SECTIONS.find(function(s) { return s.id === sectionId; });
+  if (!section) return;
+  var opt = section.options.find(function(o) { return o.key === optKey; });
+  if (!opt) return;
+
+  // Update iframe src
+  var iframe = document.getElementById('iframe-' + sectionId);
+  var newSrc = section.mockupFile + '?opt=' + optKey + '&embed=1';
+  if (iframe) iframe.src = newSrc;
+
+  // Update info
+  var title = document.getElementById('ptitle-' + sectionId);
+  var desc = document.getElementById('pdesc-' + sectionId);
+  var fullLink = document.getElementById('pfull-' + sectionId);
+  if (title) title.textContent = opt.title;
+  if (desc) desc.textContent = opt.desc;
+  if (fullLink) fullLink.href = newSrc;
+
+  // Update tab active states
+  section.options.forEach(function(o) {
+    var tab = document.getElementById('tab-' + sectionId + '-' + o.key);
+    if (tab) tab.classList.toggle('active', o.key === optKey);
+  });
+
+  // Update vote button state
+  updateUI();
+}
+
+// ─── VOTE CURRENT TAB ───
+function voteCurrentTab(sectionId) {
+  vote(sectionId, activeTabs[sectionId]);
+}
+
+// ─── FULLSCREEN ───
+function openFullscreen(sectionId) {
+  var section = SECTIONS.find(function(s) { return s.id === sectionId; });
+  if (!section) return;
+  var optKey = activeTabs[sectionId];
+  var opt = section.options.find(function(o) { return o.key === optKey; });
+  if (!opt) return;
+
+  var modal = document.getElementById('fullscreen-modal');
+  var iframe = document.getElementById('fullscreen-iframe');
+  var title = document.getElementById('modal-title');
+
+  if (title) title.textContent = section.title + ' \u2014 ' + opt.title;
+  if (iframe) iframe.src = section.mockupFile + '?opt=' + optKey + '&embed=1';
+  if (modal) modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFullscreen() {
+  var modal = document.getElementById('fullscreen-modal');
+  var iframe = document.getElementById('fullscreen-iframe');
+  if (modal) modal.classList.remove('show');
+  if (iframe) iframe.src = '';
+  document.body.style.overflow = '';
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeFullscreen();
+});
 
 // ─── VOTER SELECTION ───
 function selectVoter(name) {
@@ -443,7 +553,7 @@ function selectVoter(name) {
   localStorage.setItem('menti_design_voter', name);
   document.getElementById('no-voter-overlay').classList.remove('show');
 
-  document.querySelectorAll('.voter-btn').forEach(b => {
+  document.querySelectorAll('.voter-btn').forEach(function(b) {
     b.classList.toggle('active', b.dataset.voter === name);
   });
 
@@ -457,32 +567,30 @@ async function vote(category, choice) {
     return;
   }
 
-  // Optimistic update
   if (!allVotes[currentVoter]) allVotes[currentVoter] = {};
   allVotes[currentVoter][category] = choice;
   updateUI();
 
   try {
-    const res = await fetch(API_URL, {
+    var res = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ voter: currentVoter, category, choice }),
+      body: JSON.stringify({ voter: currentVoter, category: category, choice: choice }),
     });
     if (res.ok) {
-      const data = await res.json();
+      var data = await res.json();
       allVotes = data.votes || allVotes;
       updateUI();
     }
   } catch (err) {
     console.warn('Vote save failed, using local state:', err);
-    // Keep optimistic update
   }
 }
 
 // ─── LOAD VOTES ───
 async function loadVotes() {
   try {
-    const res = await fetch(API_URL);
+    var res = await fetch(API_URL);
     if (res.ok) {
       allVotes = await res.json();
     }
@@ -494,75 +602,86 @@ async function loadVotes() {
 
 // ─── UPDATE UI ───
 function updateUI() {
-  const voters = ['elad', 'zohar', 'keren'];
+  var voters = ['elad', 'zohar', 'keren'];
 
-  SECTIONS.forEach(section => {
-    let sectionVoted = false;
+  SECTIONS.forEach(function(section) {
+    var sectionVoted = false;
+    var myVoteInSection = currentVoter && allVotes[currentVoter] ? allVotes[currentVoter][section.id] : null;
 
-    section.options.forEach(opt => {
-      const card = document.getElementById(`card-${section.id}-${opt.key}`);
-      const btn = document.getElementById(`btn-${section.id}-${opt.key}`);
-      if (!card || !btn) return;
-
-      const isMyVote = currentVoter && allVotes[currentVoter] && allVotes[currentVoter][section.id] === opt.key;
-      card.classList.toggle('selected', isMyVote);
-      btn.classList.toggle('voted', isMyVote);
-      btn.textContent = isMyVote ? 'הבחירה שלי' : 'הצבע';
-
-      if (isMyVote) sectionVoted = true;
-
-      // Voter dots
-      voters.forEach(v => {
-        const dot = document.getElementById(`dot-${section.id}-${opt.key}-${v}`);
+    section.options.forEach(function(opt) {
+      // Tab voter dots
+      voters.forEach(function(v) {
+        var dot = document.getElementById('tdot-' + section.id + '-' + opt.key + '-' + v);
         if (dot) {
-          const voted = allVotes[v] && allVotes[v][section.id] === opt.key;
+          var voted = allVotes[v] && allVotes[v][section.id] === opt.key;
           dot.classList.toggle('active', voted);
         }
       });
+
+      // Tab voted state (highlight the tab that current voter voted for)
+      var tab = document.getElementById('tab-' + section.id + '-' + opt.key);
+      if (tab) {
+        var isMyVote = myVoteInSection === opt.key;
+        tab.classList.toggle('voted-tab', isMyVote);
+        if (isMyVote) sectionVoted = true;
+      }
     });
 
+    // Update preview container border (selected if viewing voted option)
+    var preview = document.getElementById('preview-' + section.id);
+    if (preview) {
+      var viewingVoted = myVoteInSection === activeTabs[section.id];
+      preview.classList.toggle('selected', viewingVoted);
+    }
+
+    // Update vote button in preview
+    var voteBtn = document.getElementById('pvote-' + section.id);
+    if (voteBtn) {
+      var isCurrentTabVoted = myVoteInSection === activeTabs[section.id];
+      voteBtn.classList.toggle('voted', isCurrentTabVoted);
+      voteBtn.textContent = isCurrentTabVoted ? '\u05D4\u05D1\u05D7\u05D9\u05E8\u05D4 \u05E9\u05DC\u05D9 \u2713' : '\u05D4\u05E6\u05D1\u05E2';
+    }
+
     // Nav check
-    const check = document.getElementById(`check-${section.id}`);
+    var check = document.getElementById('check-' + section.id);
     if (check) check.textContent = sectionVoted ? '\u2713 ' : '';
   });
 
   // Status bar
-  const statusText = document.getElementById('status-text');
-  const statusProgress = document.getElementById('status-progress');
+  var statusText = document.getElementById('status-text');
+  var statusProgress = document.getElementById('status-progress');
   if (currentVoter) {
-    const myVotes = allVotes[currentVoter] || {};
-    const votedCount = Object.keys(myVotes).length;
-    const total = SECTIONS.length;
-    const voterNames = { elad: 'אלעד', zohar: 'זוהר', keren: 'קרן' };
-    statusText.textContent = `${voterNames[currentVoter]}, הצבעת ב-${votedCount} מתוך ${total} קטגוריות`;
-    statusProgress.textContent = votedCount === total ? 'הושלם!' : `${total - votedCount} נותרו`;
+    var myVotes = allVotes[currentVoter] || {};
+    var votedCount = Object.keys(myVotes).length;
+    var total = SECTIONS.length;
+    var voterNames = { elad: '\u05D0\u05DC\u05E2\u05D3', zohar: '\u05D6\u05D5\u05D4\u05E8', keren: '\u05E7\u05E8\u05DF' };
+    statusText.textContent = voterNames[currentVoter] + ', \u05D4\u05E6\u05D1\u05E2\u05EA \u05D1-' + votedCount + ' \u05DE\u05EA\u05D5\u05DA ' + total + ' \u05E7\u05D8\u05D2\u05D5\u05E8\u05D9\u05D5\u05EA';
+    statusProgress.textContent = votedCount === total ? '\u05D4\u05D5\u05E9\u05DC\u05DD!' : (total - votedCount) + ' \u05E0\u05D5\u05EA\u05E8\u05D5';
   }
 
-  // Results table
   renderResults();
 }
 
 // ─── RESULTS TABLE ───
 function renderResults() {
-  const tbody = document.getElementById('results-body');
-  const voterNames = { elad: 'אלעד', zohar: 'זוהר', keren: 'קרן' };
-  let html = '';
+  var tbody = document.getElementById('results-body');
+  var html = '';
 
-  SECTIONS.forEach(section => {
-    const eVote = (allVotes.elad || {})[section.id] || null;
-    const zVote = (allVotes.zohar || {})[section.id] || null;
-    const kVote = (allVotes.keren || {})[section.id] || null;
+  SECTIONS.forEach(function(section) {
+    var eVote = (allVotes.elad || {})[section.id] || null;
+    var zVote = (allVotes.zohar || {})[section.id] || null;
+    var kVote = (allVotes.keren || {})[section.id] || null;
 
-    const allSame = eVote && zVote && kVote && eVote === zVote && zVote === kVote;
-    const consensus = allSame ? `<span class="match">${eVote}</span>` : (eVote || zVote || kVote ? 'טרם הוכרע' : '-');
+    var allSame = eVote && zVote && kVote && eVote === zVote && zVote === kVote;
+    var consensus = allSame ? '<span class="match">' + eVote + '</span>' : (eVote || zVote || kVote ? '\u05D8\u05E8\u05DD \u05D4\u05D5\u05DB\u05E8\u05E2' : '-');
 
-    html += `<tr>`;
-    html += `<td><strong>${section.title}</strong></td>`;
-    html += `<td class="${eVote ? '' : 'pending'}">${eVote || 'טרם הצביע'}</td>`;
-    html += `<td class="${zVote ? '' : 'pending'}">${zVote || 'טרם הצביע'}</td>`;
-    html += `<td class="${kVote ? '' : 'pending'}">${kVote || 'טרם הצביע'}</td>`;
-    html += `<td>${consensus}</td>`;
-    html += `</tr>`;
+    html += '<tr>';
+    html += '<td><strong>' + section.title + '</strong></td>';
+    html += '<td class="' + (eVote ? '' : 'pending') + '">' + (eVote || '\u05D8\u05E8\u05DD \u05D4\u05E6\u05D1\u05D9\u05E2') + '</td>';
+    html += '<td class="' + (zVote ? '' : 'pending') + '">' + (zVote || '\u05D8\u05E8\u05DD \u05D4\u05E6\u05D1\u05D9\u05E2') + '</td>';
+    html += '<td class="' + (kVote ? '' : 'pending') + '">' + (kVote || '\u05D8\u05E8\u05DD \u05D4\u05E6\u05D1\u05D9\u05E2') + '</td>';
+    html += '<td>' + consensus + '</td>';
+    html += '</tr>';
   });
 
   tbody.innerHTML = html;
@@ -574,7 +693,6 @@ if (currentVoter) selectVoter(currentVoter);
 else document.getElementById('no-voter-overlay').classList.add('show');
 loadVotes();
 
-// Refresh votes every 15 seconds
 setInterval(loadVotes, 15000);
 </script>
 </body>
